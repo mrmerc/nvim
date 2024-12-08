@@ -15,6 +15,21 @@ return {
 
 		local get_default_status_text = config.values.get_status_text
 
+		local search_string_layout = {
+			layout_strategy = "vertical",
+			layout_config = {
+				vertical = {
+					prompt_position = "top",
+					mirror = true,
+					height = 0.8,
+					width = { 0.8, max = 120 },
+					preview_height = 0.5,
+					preview_cutoff = 0,
+				},
+			},
+			preview = true,
+		}
+
 		telescope.setup({
 			defaults = {
 				get_status_text = function(picker, opts)
@@ -25,6 +40,8 @@ return {
 				prompt_prefix = " > ",
 				selection_caret = " > ",
 				entry_prefix = "   ",
+				dynamic_preview_title = true,
+				results_title = false,
 				path_display = {
 					filename_first = {
 						reverse_directories = false,
@@ -32,8 +49,13 @@ return {
 				},
 				layout_strategy = "horizontal",
 				layout_config = {
-					horizontal = { prompt_position = "top", height = 0.64, width = 0.5, preview_cutoff = 160 },
+					horizontal = {
+						prompt_position = "top",
+						height = { 0.64, max = 32 },
+						width = { 0.5, max = 100 },
+					},
 				},
+				preview = false,
 				sorting_strategy = "ascending",
 				mappings = {
 					i = {
@@ -59,13 +81,14 @@ return {
 				},
 				oldfiles = {
 					cwd_only = true,
-				},
-				live_grep = {
 					layout_config = {
-						horizontal = { preview_cutoff = 0, width = 0.8 },
+						horizontal = {
+							height = { 0.32, max = 16 },
+						},
 					},
 				},
-				grep_string = {},
+				live_grep = search_string_layout,
+				grep_string = search_string_layout,
 			},
 		})
 
@@ -77,10 +100,12 @@ return {
 
 		map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "Find files (cwd)" })
 		map("n", "<leader>f.", function()
-			builtin.find_files({ cwd = vim.fn.expand("%:p:h") })
+			builtin.find_files({ cwd = vim.fn.expand("%:p:h"), prompt_title = vim.fn.expand("%:~:.") })
 		end, { desc = "Find siblings" })
 		map("n", "<leader>f<CR>", "<cmd>Telescope resume<CR>", { desc = "Resume previous search" })
-		map("n", "<leader>fr", "<cmd>Telescope oldfiles<CR>", { desc = "Find recent files" })
+		map("n", "<leader>fr", function()
+			builtin.oldfiles({ prompt_title = "Recent" })
+		end, { desc = "Find recent files" })
 		map("n", "<leader>fs", "<cmd>Telescope live_grep<CR>", { desc = "Find string (cwd)" })
 		map("n", "<leader>fc", "<cmd>Telescope grep_string<CR>", { desc = "Find string under cursor (cwd)" })
 		map("n", "<leader>ft", "<cmd>TodoTelescope<CR>", { desc = "Find todos" })
