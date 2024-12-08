@@ -27,12 +27,12 @@ return {
 				entry_prefix = "   ",
 				path_display = {
 					filename_first = {
-						reverse_directories = true,
+						reverse_directories = false,
 					},
 				},
 				layout_strategy = "horizontal",
 				layout_config = {
-					horizontal = { prompt_position = "top", height = 24, width = 72, preview_cutoff = 160 },
+					horizontal = { prompt_position = "top", height = 0.64, width = 0.5, preview_cutoff = 160 },
 				},
 				sorting_strategy = "ascending",
 				mappings = {
@@ -44,8 +44,18 @@ return {
 			},
 			pickers = {
 				find_files = {
-					hidden = true,
-					-- find_command = { "fd", "-tf", "-td", "-H", "--no-follow", "--color=never" },
+					find_command = {
+						"rg",
+						"--files",
+						"-S",
+						"--no-follow",
+						"--hidden",
+						"--glob",
+						"!.git/*",
+						"--type-add",
+						"env:.env*",
+						"--color=never",
+					},
 				},
 				oldfiles = {
 					cwd_only = true,

@@ -8,7 +8,6 @@ return {
 			enabled = true,
 			sections = {
 				{ section = "header", padding = 5 },
-				-- { section = "keys", gap = 1, padding = 1 },
 				-- @type snacks.dashboard.Gen
 				function()
 					local stats = require("lazy.stats").stats()
@@ -27,14 +26,8 @@ return {
 			},
 			formats = {
 				header = { "%s", hl = "Type" },
-				key = { "%s", hl = "Keyword" },
-				desc = { "%s", hl = "Text" },
 			},
 			preset = {
-				keys = {
-					{ key = "r", desc = "Restore", action = "<leader>sr" },
-					{ key = "q", desc = "Quit", action = "<cmd>qa" },
-				},
 				header = table.concat({
 					"            ...                               ..            ",
 					"        -*%@@@@@#*-.                    .-+#%@@@@%*=        ",
@@ -62,13 +55,30 @@ return {
 				}, "\n"),
 			},
 		},
-		lazygit = { enabled = true },
+		lazygit = {
+			enabled = true,
+			config = {
+				gui = {
+					authorColors = {
+						["'Vasiliy Andreev'"] = "blue",
+						["'*'"] = "white",
+					},
+				},
+			},
+		},
 	},
 	keys = {
 		{
 			"<leader>gg",
 			function()
-				require("snacks").lazygit()
+				require("snacks").lazygit.open()
+			end,
+			desc = "Lazygit",
+		},
+		{
+			"<leader>gl",
+			function()
+				require("snacks").lazygit.log()
 			end,
 			desc = "Lazygit",
 		},
