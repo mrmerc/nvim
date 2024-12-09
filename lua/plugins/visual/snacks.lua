@@ -66,6 +66,18 @@ return {
 				},
 			},
 		},
+		notifier = {
+			enabled = true,
+			icons = {
+				error = vim.diagnostic.config().signs.text[vim.diagnostic.severity.ERROR],
+				warn = vim.diagnostic.config().signs.text[vim.diagnostic.severity.WARN],
+				info = vim.diagnostic.config().signs.text[vim.diagnostic.severity.INFO],
+				debug = " ",
+				trace = " ",
+			},
+			top_down = false,
+			style = "compact",
+		},
 	},
 	keys = {
 		{
@@ -80,7 +92,14 @@ return {
 			function()
 				require("snacks").lazygit.log()
 			end,
-			desc = "Lazygit",
+			desc = "Lazygit (log)",
+		},
+		{
+			"<leader>n",
+			function()
+				require("snacks").notifier.show_history()
+			end,
+			desc = "Notification history",
 		},
 	},
 }

@@ -89,15 +89,13 @@ vim.opt.spelllang = { "en,ru" }
 vim.opt.foldlevel = 99
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.opt.foldtext = ""
+vim.opt.foldtext = "v:lua.require('custom.foldtext').get_foldtext()"
 
 -- Custom icons
 vim.opt.fillchars = {
-	foldopen = "",
-	foldclose = "",
-	foldsep = " ",
 	diff = "╱",
 	eob = " ",
+	fold = " ",
 }
 
 -- Fix markdown indentation settings
