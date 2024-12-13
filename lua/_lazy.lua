@@ -30,6 +30,20 @@ require("lazy").setup({
 		notify = false,
 	},
 	ui = {
+		border = "rounded",
 		backdrop = 40,
+	},
+	performance = {
+		rtp = {
+			disabled_plugins = {
+				"gzip",
+				"netrwPlugin",
+				"rplugin",
+				"tarPlugin",
+				"tohtml",
+				"tutor",
+				"zipPlugin",
+			},
+		},
 	},
 })

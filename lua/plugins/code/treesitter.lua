@@ -2,23 +2,22 @@ return {
 	"nvim-treesitter/nvim-treesitter",
 	event = { "BufReadPre", "BufNewFile" },
 	build = ":TSUpdate",
-	init = function(plugin)
-		require("lazy.core.loader").add_to_rtp(plugin)
-		pcall(require, "nvim-treesitter.query_predicates")
-	end,
 	config = function()
-		-- import nvim-treesitter plugin
 		local treesitter = require("nvim-treesitter.configs")
 
-		-- configure treesitter
+		---@diagnostic disable-next-line: missing-fields
 		treesitter.setup({
-			-- enable syntax highlighting
 			highlight = {
 				enable = true,
+				disable = function(lang, buf)
+					local max_filesize = 100 * 1024 -- 100 KB
+					local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+					if ok and stats and stats.size > max_filesize then
+						return true
+					end
+				end,
 			},
-			-- enable indentation
 			indent = { enable = true },
-			-- ensure these language parsers are installed
 			ensure_installed = {
 				"json",
 				"javascript",

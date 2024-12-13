@@ -50,8 +50,8 @@ return {
 				layout_config = {
 					horizontal = {
 						prompt_position = "top",
-						height = { 0.64, max = 32 },
-						width = { 0.5, max = 100 },
+						height = { 0.64, max = 28 },
+						width = { 0.5, max = 80 },
 					},
 				},
 				preview = false,
@@ -82,7 +82,7 @@ return {
 					cwd_only = true,
 					layout_config = {
 						horizontal = {
-							height = { 0.32, max = 16 },
+							height = { 0.32, max = 12 },
 						},
 					},
 				},

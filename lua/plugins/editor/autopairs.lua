@@ -18,6 +18,9 @@ return {
 				lua = { "string" }, -- don't add pairs in lua string treesitter nodes
 				-- javascript = { "template_string" }, -- don't add pairs in javscript template_string treesitter nodes
 			},
+			ignored_next_char = "[%w%.]", -- will ignore alphanumeric and `.` symbol
+			enable_check_bracket_line = false,
+			fast_wrap = {},
 		})
 
 		autopairs.add_rules({

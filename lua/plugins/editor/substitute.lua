@@ -4,7 +4,9 @@ return {
 	opts = function()
 		local substitute = require("substitute")
 
-		substitute.setup()
+		substitute.setup({
+			on_substitute = require("yanky.integration").substitute(),
+		})
 
 		local map = vim.keymap.set
 

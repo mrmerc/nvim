@@ -9,7 +9,7 @@ M.get_foldtext = function()
 	local line_count = vim.v.foldend - vim.v.foldstart + 1
 	local line = vim.fn.getline(vim.v.foldstart)
 
-	return string.format("   󰡍 %s lines: %s", line_count, line)
+	return string.format("%s    󰡍 %s lines", line, line_count)
 end
 
 return M
