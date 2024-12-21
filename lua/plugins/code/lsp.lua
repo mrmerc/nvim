@@ -2,7 +2,7 @@ return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
-		"hrsh7th/cmp-nvim-lsp",
+		"saghen/blink.cmp",
 		"williamboman/mason-lspconfig.nvim",
 		{ "antosha417/nvim-lsp-file-operations", opts = {} },
 		{ "folke/lazydev.nvim", opts = {}, ft = "lua" },
@@ -91,8 +91,7 @@ return {
 			end,
 		})
 
-		-- enable autocompletion (assign to every lsp server config)
-		local capabilities = require("cmp_nvim_lsp").default_capabilities()
+		local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 		local handlers_opts = {
 			border = "rounded",
@@ -187,7 +186,7 @@ return {
 							referencesCodeLens = { enabled = true, showOnAllFunctions = true },
 						},
 					},
-					filetypes = { "typescript", "javascript" },
+					filetypes = { "typescript", "javascript", "vue" },
 				}))
 			end,
 			["gopls"] = function()
