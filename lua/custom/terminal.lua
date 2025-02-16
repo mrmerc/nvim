@@ -18,8 +18,9 @@ end
 
 ---@param buf_id integer
 local set_terminal_buf_keymaps = function(buf_id)
-	vim.keymap.set("n", "q", "<cmd>q<CR>", { desc = "Hide terminal", remap = true, buffer = buf_id })
-	vim.keymap.set("n", "Q", "<cmd>bd<CR>", { desc = "Quit terminal", noremap = true, buffer = buf_id })
+	vim.keymap.set("t", "<C-q>", "<cmd>q<CR>", { desc = "Hide terminal", buffer = buf_id })
+	vim.keymap.set("n", "q", "<cmd>q<CR>", { desc = "Hide terminal", buffer = buf_id })
+	vim.keymap.set("n", "Q", "<cmd>bd<CR>", { desc = "Quit terminal", buffer = buf_id })
 end
 
 ---@param buf_id integer?
@@ -151,6 +152,10 @@ local show_terminal_list_window = function()
 			return item.title
 		end,
 	}, function(selectedItem)
+		if selectedItem == nil then
+			return
+		end
+
 		if selectedItem.buf_id ~= nil then
 			open_terminal(selectedItem.buf_id, selectedItem.title)
 			return

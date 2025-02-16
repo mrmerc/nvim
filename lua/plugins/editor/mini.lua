@@ -3,7 +3,14 @@ return {
 	{
 		"echasnovski/mini.ai",
 		version = "*",
-		opts = {},
+		config = function()
+			local spec_treesitter = require("mini.ai").gen_spec.treesitter
+			require("mini.ai").setup({
+				custom_textobjects = {
+					A = spec_treesitter({ a = "@attribute.outer", i = "@attribute.inner" }),
+				},
+			})
+		end,
 	},
 	-- Sessions
 	{

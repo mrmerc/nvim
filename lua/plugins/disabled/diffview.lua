@@ -1,5 +1,6 @@
 return {
 	"sindrets/diffview.nvim",
+	enabled = false,
 	cmd = {
 		"DiffviewOpen",
 	},
@@ -10,7 +11,7 @@ return {
 		enhanced_diff_hl = false,
 		view = {
 			merge_tool = {
-				layout = "diff1_plain",
+				-- layout = "diff1_plain",
 			},
 		},
 		hooks = {

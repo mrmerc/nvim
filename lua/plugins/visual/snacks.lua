@@ -2,6 +2,25 @@ return {
 	"folke/snacks.nvim",
 	priority = 1000,
 	lazy = false,
+	init = function()
+		-- Dashboard Cursor
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "SnacksDashboardOpened",
+			callback = function()
+				vim.opt.guicursor:append("n:Cursor")
+				vim.cmd("hi Cursor blend=100")
+
+				vim.api.nvim_create_autocmd("User", {
+					once = true,
+					pattern = "SnacksDashboardClosed",
+					callback = function()
+						vim.opt.guicursor:remove("n:Cursor")
+						vim.cmd("hi Cursor blend=0")
+					end,
+				})
+			end,
+		})
+	end,
 	---@type snacks.Config
 	---@diagnostic disable-next-line: missing-fields
 	opts = {
@@ -56,17 +75,17 @@ return {
 				}, "\n"),
 			},
 		},
-		lazygit = {
-			enabled = true,
-			config = {
-				gui = {
-					authorColors = {
-						["'Vasiliy Andreev'"] = "blue",
-						["'*'"] = "white",
-					},
-				},
-			},
-		},
+		-- lazygit = {
+		-- 	enabled = true,
+		-- 	config = {
+		-- 		gui = {
+		-- 			authorColors = {
+		-- 				["'Vasiliy Andreev'"] = "blue",
+		-- 				["'*'"] = "white",
+		-- 			},
+		-- 		},
+		-- 	},
+		-- },
 		notifier = {
 			enabled = true,
 			icons = {
@@ -94,20 +113,13 @@ return {
 		},
 	},
 	keys = {
-		{
-			"<leader>gg",
-			function()
-				require("snacks").lazygit.open()
-			end,
-			desc = "Lazygit",
-		},
-		{
-			"<leader>gl",
-			function()
-				require("snacks").lazygit.log()
-			end,
-			desc = "Lazygit (log)",
-		},
+		-- {
+		-- 	"<leader>gg",
+		-- 	function()
+		-- 		require("snacks").lazygit.open()
+		-- 	end,
+		-- 	desc = "Lazygit",
+		-- },
 		{
 			"<leader>n",
 			function()

@@ -1,9 +1,9 @@
 vim.diagnostic.config({
-	virtual_text = false,
-	-- virtual_text = {
-	--   prefix = "",
-	--   spacing = 3,
-	-- },
+	-- virtual_text = false,
+	virtual_text = {
+		prefix = "",
+		spacing = 3,
+	},
 	update_in_insert = false,
 	severity_sort = true,
 	float = {
@@ -20,6 +20,8 @@ vim.diagnostic.config({
 })
 
 vim.opt.statusline = require("custom.statusline").get_statusline()
+vim.opt.statuscolumn = require("custom.statuscolumn").get_statuscolumn()
+vim.opt.signcolumn = "yes:2"
 vim.opt.tabline = "%!v:lua.require('custom.tabline').get_tabline()"
 
 vim.opt.scrolloff = 10
@@ -27,8 +29,6 @@ vim.opt.scrolloff = 10
 vim.opt.relativenumber = true -- Show line numbers in relative format
 vim.opt.number = true -- Show current line number
 vim.opt.numberwidth = 1
-
-vim.opt.signcolumn = "yes:1"
 
 vim.opt.confirm = true -- Confirm to save changes before exiting modified buffer
 vim.opt.laststatus = 3 -- global status line
@@ -73,7 +73,6 @@ vim.opt.cursorline = true
 -- Theme
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
-vim.opt.signcolumn = "yes"
 
 -- Clipboard
 vim.opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus" -- Sync with system clipboard

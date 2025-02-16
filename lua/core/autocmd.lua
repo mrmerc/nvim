@@ -6,33 +6,6 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
 	end,
 })
 
--- Statusline
-vim.api.nvim_create_autocmd("DiagnosticChanged", {
-	callback = function()
-		vim.api.nvim__redraw({
-			statusline = true,
-		})
-	end,
-})
-
--- Dashboard Cursor
-vim.api.nvim_create_autocmd("User", {
-	pattern = "SnacksDashboardOpened",
-	callback = function()
-		vim.opt.guicursor:append("n:Cursor")
-		vim.cmd("hi Cursor blend=100")
-
-		vim.api.nvim_create_autocmd("User", {
-			once = true,
-			pattern = "SnacksDashboardClosed",
-			callback = function()
-				vim.opt.guicursor:remove("n:Cursor")
-				vim.cmd("hi Cursor blend=0")
-			end,
-		})
-	end,
-})
-
 -- LSP Progress
 ---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
 local progress = vim.defaulttable()
