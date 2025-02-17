@@ -3,21 +3,48 @@ return {
 	priority = 1000,
 	lazy = false,
 	init = function()
+		local cursor_hide_group = vim.api.nvim_create_augroup("cursor_hide_group", { clear = true })
+
+		local show_cursor = function()
+			vim.opt.guicursor:remove("n:Cursor")
+			vim.cmd("hi Cursor blend=0")
+		end
+
+		local hide_cursor = function()
+			vim.opt.guicursor:append("n:Cursor")
+			vim.cmd("hi Cursor blend=100")
+		end
+
 		-- Dashboard Cursor
 		vim.api.nvim_create_autocmd("User", {
+			group = cursor_hide_group,
 			pattern = "SnacksDashboardOpened",
 			callback = function()
-				vim.opt.guicursor:append("n:Cursor")
-				vim.cmd("hi Cursor blend=100")
+				hide_cursor()
+			end,
+		})
 
-				vim.api.nvim_create_autocmd("User", {
-					once = true,
-					pattern = "SnacksDashboardClosed",
-					callback = function()
-						vim.opt.guicursor:remove("n:Cursor")
-						vim.cmd("hi Cursor blend=0")
-					end,
-				})
+		vim.api.nvim_create_autocmd("BufLeave", {
+			pattern = "*",
+			group = cursor_hide_group,
+			callback = function()
+				if vim.bo.filetype ~= "snacks_dashboard" then
+					return
+				end
+
+				show_cursor()
+			end,
+		})
+
+		vim.api.nvim_create_autocmd("BufEnter", {
+			pattern = "*",
+			group = cursor_hide_group,
+			callback = function()
+				if vim.bo.filetype ~= "snacks_dashboard" then
+					return
+				end
+
+				hide_cursor()
 			end,
 		})
 	end,
@@ -75,17 +102,17 @@ return {
 				}, "\n"),
 			},
 		},
-		-- lazygit = {
-		-- 	enabled = true,
-		-- 	config = {
-		-- 		gui = {
-		-- 			authorColors = {
-		-- 				["'Vasiliy Andreev'"] = "blue",
-		-- 				["'*'"] = "white",
-		-- 			},
-		-- 		},
-		-- 	},
-		-- },
+		lazygit = {
+			enabled = true,
+			config = {
+				gui = {
+					authorColors = {
+						["'Vasiliy Andreev'"] = "blue",
+						["'*'"] = "white",
+					},
+				},
+			},
+		},
 		notifier = {
 			enabled = true,
 			icons = {
@@ -113,13 +140,13 @@ return {
 		},
 	},
 	keys = {
-		-- {
-		-- 	"<leader>gg",
-		-- 	function()
-		-- 		require("snacks").lazygit.open()
-		-- 	end,
-		-- 	desc = "Lazygit",
-		-- },
+		{
+			"<leader>gg",
+			function()
+				require("snacks").lazygit.open()
+			end,
+			desc = "Lazygit",
+		},
 		{
 			"<leader>n",
 			function()
