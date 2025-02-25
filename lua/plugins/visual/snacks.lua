@@ -102,17 +102,6 @@ return {
 				}, "\n"),
 			},
 		},
-		lazygit = {
-			enabled = true,
-			config = {
-				gui = {
-					authorColors = {
-						["'Vasiliy Andreev'"] = "blue",
-						["'*'"] = "white",
-					},
-				},
-			},
-		},
 		notifier = {
 			enabled = true,
 			icons = {
@@ -140,13 +129,6 @@ return {
 		},
 	},
 	keys = {
-		{
-			"<leader>gg",
-			function()
-				require("snacks").lazygit.open()
-			end,
-			desc = "Lazygit",
-		},
 		{
 			"<leader>n",
 			function()
