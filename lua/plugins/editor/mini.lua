@@ -17,12 +17,22 @@ return {
 		version = "*",
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
-			-- "JoosepAlviste/nvim-ts-context-commentstring",
+			"JoosepAlviste/nvim-ts-context-commentstring",
 		},
-		opts = {
-			hooks = {
-				-- pre = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
-			},
-		},
+		config = function()
+			local commentstring = require("ts_context_commentstring")
+
+			commentstring.setup({
+				enable_autocmd = false,
+			})
+
+			require("mini.comment").setup({
+				options = {
+					custom_commentstring = function()
+						return commentstring.calculate_commentstring() or vim.bo.commentstring
+					end,
+				},
+			})
+		end,
 	},
 }

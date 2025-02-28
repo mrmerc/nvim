@@ -7,41 +7,38 @@ return {
 	---@module 'blink.cmp'
 	---@type blink.cmp.Config
 	opts = {
+		enabled = function()
+			return vim.tbl_contains({ "snacks_input" }, vim.bo.filetype)
+				or (vim.bo.buftype ~= "prompt" and vim.b.completion ~= false)
+		end,
+
 		keymap = { preset = "super-tab" },
 
 		appearance = {
 			nerd_font_variant = "normal",
 		},
 
+		fuzzy = {
+			sorts = { "exact", "score", "sort_text" },
+		},
+
 		snippets = {
 			preset = "luasnip",
-			-- FIXME: remove, if clg snippet is OK
-			-- defualt
-			-- score_offset = -3,
 		},
 
 		sources = {
 			providers = {
-				-- FIXME: remove, if clg snippet is OK
-				-- snippets = {
-				-- 	score_offset = 0,
-				-- },
 				lsp = {
 					transform_items = function(_, items)
 						return vim.iter(items)
 							:filter(
 								---@param item blink.cmp.CompletionItem
 								function(item)
-									-- FIXME: remove, if clg snippet is OK
-									-- raise score offset of snippets
-									-- if item.kind == require("blink.cmp.types").CompletionItemKind.Snippet then
-									-- 	item.score_offset = item.score_offset + 3
-									-- end
-
+									-- FIXME: remove if ok with text from lsp
 									-- filter out text items from lsp
-									if item.kind == require("blink.cmp.types").CompletionItemKind.Text then
-										return false
-									end
+									-- if item.kind == require("blink.cmp.types").CompletionItemKind.Text then
+									-- 	return false
+									-- end
 
 									if vim.bo.filetype ~= "vue" then
 										return true

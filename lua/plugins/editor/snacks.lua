@@ -6,8 +6,10 @@ return {
 		local cursor_hide_group = vim.api.nvim_create_augroup("cursor_hide_group", { clear = true })
 
 		local show_cursor = function()
-			vim.opt.guicursor:remove("n:Cursor")
-			vim.cmd("hi Cursor blend=0")
+			vim.defer_fn(function()
+				vim.opt.guicursor:remove("n:Cursor")
+				vim.cmd("hi Cursor blend=0")
+			end, 250)
 		end
 
 		local hide_cursor = function()
@@ -49,9 +51,90 @@ return {
 		})
 	end,
 	---@type snacks.Config
-	---@diagnostic disable-next-line: missing-fields
 	opts = {
-		picker = {},
+		---@type snacks.picker.Config
+		picker = {
+			prompt = "  ",
+			layout = {
+				preset = "vertical",
+			},
+			hidden = true,
+			formatters = {
+				file = {
+					filename_first = true,
+				},
+			},
+			sources = {
+				explorer = {
+					hidden = false,
+					auto_close = true,
+					win = {
+						list = {
+							keys = {
+								["R"] = "copy_relative_name",
+								["A"] = "copy_file_path",
+							},
+						},
+					},
+					actions = {
+						copy_relative_name = function(_, item)
+							if not item then
+								return
+							end
+
+							local filename = vim.fs.basename(item.file)
+
+							vim.fn.setreg(vim.v.register or "+", filename, "c")
+							vim.notify("Copied item name", vim.log.levels.INFO)
+						end,
+						copy_file_path = function(_, item)
+							if not item then
+								return
+							end
+
+							vim.fn.setreg(vim.v.register or "+", item.file, "c")
+							vim.notify("Copied item path", vim.log.levels.INFO)
+						end,
+					},
+					layout = {
+						-- preset = "vscode",
+						layout = {
+							-- row = 3,
+							-- height = 0.8,
+							position = "float",
+						},
+					},
+				},
+				recent = {
+					filter = {
+						cwd = true,
+					},
+					layout = {
+						preset = "vscode",
+						layout = {
+							row = 3,
+						},
+					},
+				},
+				grep = {
+					layout = {
+						layout = {
+							width = 0.8,
+						},
+					},
+				},
+				notifications = {
+					layout = {
+						preset = "ivy",
+					},
+				},
+				files = {
+					layout = {
+						preset = "ivy",
+					},
+				},
+			},
+		},
 		dashboard = {
 			sections = {
 				{ section = "header", padding = 5 },
@@ -114,26 +197,20 @@ return {
 			style = "compact",
 		},
 		scroll = {},
-		---@diagnostic disable-next-line: missing-fields
+		input = {},
+		explorer = {},
 		styles = {
-			---@diagnostic disable-next-line: missing-fields
-			["notification_history"] = {
-				---@diagnostic disable-next-line: missing-fields
-				wo = {
-					number = false,
-					relativenumber = false,
+			input = {
+				relative = "cursor",
+				row = 1,
+				col = 0,
+				b = {
+					completion = true, -- enable blink completions in input
 				},
 			},
 		},
 	},
 	keys = {
-		-- {
-		-- 	"<leader>n",
-		-- 	function()
-		-- 		require("snacks").notifier.show_history()
-		-- 	end,
-		-- 	desc = "Notification history",
-		-- },
 		{
 			"gg",
 			function()
@@ -163,22 +240,22 @@ return {
 			function()
 				Snacks.explorer()
 			end,
-			desc = "File Explorer",
+			desc = "Explorer",
 		},
 		-- Pickers
 		{
-			"<leader>n",
+			"<leader>fn",
 			function()
 				Snacks.picker.notifications()
 			end,
-			desc = "Notification History",
+			desc = "Notifications",
 		},
 		{
 			"<leader>ff",
 			function()
 				Snacks.picker.files()
 			end,
-			desc = "Find Files",
+			desc = "Files",
 		},
 		{
 			"<leader>fr",
@@ -200,13 +277,6 @@ return {
 				Snacks.picker.grep()
 			end,
 			desc = "Grep",
-		},
-		{
-			"<leader>f<space>",
-			function()
-				Snacks.picker.smart()
-			end,
-			desc = "Smart Find Files",
 		},
 		-- LSP
 		{
