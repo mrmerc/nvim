@@ -3,14 +3,19 @@ return {
 	event = { "BufWritePre" },
 	cmd = { "ConformInfo" },
 	opts = {
+		log_level = vim.log.levels.DEBUG,
+		notify_on_error = false,
 		formatters_by_ft = {
-			javascript = { "eslint_d", "prettierd" },
-			typescript = { "eslint_d", "prettierd" },
-			vue = { "eslint_d", "prettierd" },
-			css = { "prettierd" },
+			javascript = { "prettierd", "eslint_d" },
+			typescript = { "prettierd", "eslint_d", "injected" },
+			vue = { "prettierd", "eslint_d", "stylelint" },
+			css = { "stylelint", "prettierd" },
+			scss = { "stylelint", "prettierd" },
 			html = { "prettierd" },
-			json = { "prettierd" },
-			yaml = { "prettierd" },
+			json = { "fixjson", "prettierd" },
+			yaml = { --[["yq",]]
+				"prettierd",
+			},
 			markdown = { "prettierd" },
 			lua = { "stylua" },
 			go = { "goimports", "gofumpt" },
@@ -19,6 +24,16 @@ return {
 		},
 		formatters = {
 			injected = { options = { ignore_errors = true } },
+			prettierd = {
+				require_cwd = true,
+				env = {
+					PRETTIERD_LOCAL_PRETTIER_ONLY = "1",
+					PRETTIERD_DEFAULT_CONFIG = string.format(
+						"%s/.config/prettier/prettier.config.mjs",
+						os.getenv("HOME")
+					),
+				},
+			},
 			sqlfluff = {
 				stdin = false,
 				args = { "fix", "--stdin-filename", "$FILENAME" },
@@ -31,6 +46,16 @@ return {
 		format_on_save = {
 			lsp_format = "fallback",
 			timeout_ms = 3000,
+		},
+	},
+	keys = {
+		{
+			"<leader>cF",
+			function()
+				require("conform").format({ formatters = { "injected" }, timeout_ms = 3000 })
+			end,
+			mode = { "n", "v" },
+			desc = "Format Injected Langs",
 		},
 	},
 }

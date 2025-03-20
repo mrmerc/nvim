@@ -3,6 +3,7 @@ return {
 	dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons" },
 	-- Lazy loading on 'VimEnter' event is necessary.
 	event = "VimEnter",
+	enabled = false,
 	opts = {
 		keymaps = {
 			["n ]h"] = "hunk_down",

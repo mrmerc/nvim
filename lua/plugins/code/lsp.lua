@@ -11,15 +11,15 @@ return {
 		codelens = {
 			enabled = true,
 		},
-		-- TODO: check LazyVim
-		-- capabilities = {
-		-- 	workspace = {
-		-- 		fileOperations = {
-		-- 			didRename = true,
-		-- 			willRename = true,
-		-- 		},
-		-- 	},
-		-- },
+		---@type lsp.ClientCapabilities
+		capabilities = {
+			workspace = {
+				fileOperations = {
+					didRename = true,
+					willRename = true,
+				},
+			},
+		},
 	},
 	config = function(_, opts)
 		local lspconfig = require("lspconfig")
@@ -81,43 +81,48 @@ return {
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = augroup,
 			callback = function(args)
-				local opts = { buffer = args.buf, silent = true } -- Buffer local mappings.
+				local options = { buffer = args.buf, silent = true } -- Buffer local mappings.
 
 				local map = vim.keymap.set
 
-				opts.desc = "See available code actions"
-				map({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, opts)
+				options.desc = "See available code actions"
+				map({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, options)
 
-				opts.desc = "Smart rename"
-				map("n", "<leader>lrn", vim.lsp.buf.rename, opts)
+				options.desc = "Smart rename"
+				map("n", "<leader>lrn", vim.lsp.buf.rename, options)
 
-				opts.desc = "LSP format"
-				map("n", "<leader>lf", vim.lsp.buf.format, opts)
+				options.desc = "LSP format"
+				map("n", "<leader>lf", vim.lsp.buf.format, options)
 
-				opts.desc = "Show line diagnostics"
-				map("n", "<leader>ld", vim.diagnostic.open_float, opts)
+				options.desc = "Show line diagnostics"
+				map("n", "<leader>ld", vim.diagnostic.open_float, options)
 
 				map({ "n", "v" }, "<leader>lc", vim.lsp.codelens.run, { desc = "Run Codelens" })
 				map("n", "<leader>lC", vim.lsp.codelens.refresh, { desc = "Refresh & Display Codelens" })
 
-				opts.desc = "Go to previous diagnostic"
-				map("n", "[d", vim.diagnostic.goto_prev, opts)
+				options.desc = "Go to previous diagnostic"
+				map("n", "[d", vim.diagnostic.goto_prev, options)
 
-				opts.desc = "Go to next diagnostic"
-				map("n", "]d", vim.diagnostic.goto_next, opts)
+				options.desc = "Go to next diagnostic"
+				map("n", "]d", vim.diagnostic.goto_next, options)
 
-				opts.desc = "Show documentation for what is under cursor"
-				map("n", "K", vim.lsp.buf.hover, opts)
+				options.desc = "Show documentation for what is under cursor"
+				map("n", "K", vim.lsp.buf.hover, options)
 
 				map("n", "gK", vim.lsp.buf.signature_help, { desc = "Signature Help" })
 
-				opts.desc = "Restart LSP"
-				map("n", "<leader>lrr", ":LspRestart<CR>", opts)
+				options.desc = "Restart LSP"
+				map("n", "<leader>lrr", ":LspRestart<CR>", options)
 			end,
 		})
 
-		-- local capabilities = require("cmp_nvim_lsp").default_capabilities()
-		local capabilities = require("blink.cmp").get_lsp_capabilities()
+		local capabilities = vim.tbl_deep_extend(
+			"force",
+			{},
+			vim.lsp.protocol.make_client_capabilities(),
+			require("blink.cmp").get_lsp_capabilities(),
+			opts.capabilities or {}
+		)
 
 		local handlers_opts = {
 			border = "rounded",

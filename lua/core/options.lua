@@ -31,7 +31,7 @@ vim.opt.number = true -- Show current line number
 vim.opt.numberwidth = 1
 
 vim.opt.confirm = true -- Confirm to save changes before exiting modified buffer
-vim.opt.laststatus = 3 -- global status line
+-- vim.opt.laststatus = 3 -- global status line
 vim.opt.ruler = false
 vim.opt.showtabline = 1 -- show tabs only if more than one
 
@@ -69,13 +69,17 @@ vim.opt.smartcase = true -- if you include mixed case in your search, assumes yo
 
 -- Highlight current line
 vim.opt.cursorline = true
+vim.opt.cursorlineopt = "number"
 
 -- Theme
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
 -- Clipboard
-vim.opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus" -- Sync with system clipboard
+-- Schedule the setting after `UiEnter` because it can increase startup-time.
+vim.schedule(function()
+	vim.opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus" -- Sync with system clipboard
+end)
 
 -- Split windows behaviouself
 vim.opt.splitright = true -- vertical to the right

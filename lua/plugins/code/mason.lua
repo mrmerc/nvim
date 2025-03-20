@@ -46,6 +46,10 @@ return {
 				"eslint_d",
 				"prettierd",
 				"sqlfluff",
+				"stylelint", -- CSS
+				"jq", -- JSON
+				"fixjson", -- JSON
+				"yq", -- YAML
 			},
 		})
 	end,
