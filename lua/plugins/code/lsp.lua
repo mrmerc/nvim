@@ -26,17 +26,16 @@ return {
 		local mason_lspconfig = require("mason-lspconfig")
 
 		local augroup = vim.api.nvim_create_augroup("UserLspConfig", {})
-		-- local codelens_group = vim.api.nvim_create_augroup("CodeLens", {})
 
-		-- TODO: For nvim 0.11
-		-- vim.api.nvim_create_autocmd("LspNotify", {
-		-- 	group = augroup,
-		-- 	callback = function(args)
-		-- 		if args.data.method == "textDocument/didOpen" then
-		-- 			vim.lsp.foldclose("imports", vim.fn.bufwinid(args.buf))
-		-- 		end
-		-- 	end,
-		-- })
+		-- autofold imports
+		vim.api.nvim_create_autocmd("LspNotify", {
+			group = augroup,
+			callback = function(args)
+				if args.data.method == "textDocument/didOpen" then
+					vim.lsp.foldclose("imports", vim.fn.bufwinid(args.buf))
+				end
+			end,
+		})
 
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = augroup,
@@ -50,30 +49,17 @@ return {
 					return
 				end
 
-				-- local buffer = args.buf ---@type number
-
-				-- TODO: For nvim 0.11
-				-- if client:supports_method("textDocument/foldingRange") then
-				-- 	vim.wo.foldexpr = "v:lua.vim.lsp.foldexpr()"
-				-- end
+				-- lsp foldexpr
+				if client:supports_method("textDocument/foldingRange") then
+					local win = vim.api.nvim_get_current_win()
+					vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+				end
 
 				-- codelens
-				if client.supports_method("textDocument/codeLens") and opts.codelens.enabled and vim.lsp.codelens then
+				if client:supports_method("textDocument/codeLens") and opts.codelens.enabled and vim.lsp.codelens then
 					vim.defer_fn(function()
 						vim.lsp.codelens.refresh()
 					end, 500)
-
-					-- vim.api.nvim_clear_autocmds({
-					-- 	buffer = buffer,
-					-- 	group = codelens_group,
-					-- })
-					-- vim.api.nvim_create_autocmd({ "BufEnter" }, {
-					-- 	group = codelens_group,
-					-- 	buffer = buffer,
-					-- 	callback = function()
-					-- 		vim.lsp.codelens.refresh()
-					-- 	end,
-					-- })
 				end
 			end,
 		})
@@ -101,15 +87,23 @@ return {
 				map("n", "<leader>lC", vim.lsp.codelens.refresh, { desc = "Refresh & Display Codelens" })
 
 				options.desc = "Go to previous diagnostic"
-				map("n", "[d", vim.diagnostic.goto_prev, options)
+				map("n", "[d", function()
+					vim.diagnostic.jump({ count = -1, float = true })
+				end, options)
 
 				options.desc = "Go to next diagnostic"
-				map("n", "]d", vim.diagnostic.goto_next, options)
+				map("n", "]d", function()
+					vim.diagnostic.jump({ count = 1, float = true })
+				end, options)
 
 				options.desc = "Show documentation for what is under cursor"
-				map("n", "K", vim.lsp.buf.hover, options)
+				map("n", "K", function()
+					vim.lsp.buf.hover({ max_width = 80 })
+				end, options)
 
-				map("n", "gK", vim.lsp.buf.signature_help, { desc = "Signature Help" })
+				map("n", "gK", function()
+					vim.lsp.buf.signature_help({ max_width = 80 })
+				end, { desc = "Signature Help" })
 
 				options.desc = "Restart LSP"
 				map("n", "<leader>lrr", ":LspRestart<CR>", options)
@@ -124,19 +118,8 @@ return {
 			opts.capabilities or {}
 		)
 
-		local handlers_opts = {
-			border = "rounded",
-			max_width = 80,
-		}
-
-		local handlers = {
-			["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, handlers_opts),
-			["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, handlers_opts),
-		}
-
 		local default_config = {
 			capabilities = capabilities,
-			handlers = handlers,
 		}
 
 		local with_default = function(config)

@@ -3,7 +3,7 @@ vim.g.mapleader = " "
 local map = vim.keymap.set
 
 -- Highlihhts
-map({ "n", "i" }, "<ESC>", "<cmd>nohl<CR><ESC>", { desc = "Clear search highlights" })
+map({ "n", "i" }, "<ESC>", "<cmd>nohlsearch<CR><ESC>", { desc = "Clear search highlights" })
 
 -- Save buffer
 map({ "n", "v" }, "<C-s>", ":silent wa<CR>", { desc = "Save all buffers", silent = true })
@@ -36,7 +36,6 @@ map("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Search Result
 
 -- void
 map({ "n", "v" }, "<leader>d", [["_d]], { desc = "Delete (void)" })
-map("x", "<leader>p", [["_dP]], { desc = "Paste (void)" })
 
 -- Replace
 map("n", "<leader>rr", ":%s/", { desc = "Replace (buffer)" })
@@ -74,17 +73,6 @@ map("n", "]<tab>", "<cmd>tabnext<cr>", { desc = "Next Tab" })
 map("n", "[<tab>", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
 map("n", "<leader><tab>x", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 map("n", "<leader><tab>o", "<cmd>tabonly<cr>", { desc = "Close Other Tabs" })
-
--- Terminal
--- map("t", "<ESC><ESC>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
--- map("n", "<leader>t", function()
--- 	require("custom.terminal").open_list_or_create_terminal()
--- end, { desc = "Open terminal" })
-
--- Lazygit
--- map("n", "<leader>gg", function()
--- 	require("custom.lazygit").open_lazygit()
--- end, { desc = "Lazygit" })
 
 -- Code comments
 map("n", "<leader>/", "gcc", { desc = "Toggle comment", remap = true })

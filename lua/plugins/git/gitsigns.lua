@@ -5,7 +5,7 @@ return {
 		local gitsigns = require("gitsigns")
 
 		gitsigns.setup({
-			sign_priority = 1,
+			sign_priority = 30, -- override diagnostics priority
 			signs = {
 				add = { text = "▎" }, -- ┃
 				change = { text = "▎" },
@@ -50,28 +50,17 @@ return {
 				end)
 
 				-- Actions
-				map("n", "<leader>ghs", gitsigns.stage_hunk)
-				map("n", "<leader>ghr", gitsigns.reset_hunk)
+				map("n", "<leader>ghs", gitsigns.stage_hunk, { desc = "Stage hunk" })
+				map("n", "<leader>ghr", gitsigns.reset_hunk, { desc = "Reset hunk" })
 
 				map("v", "<leader>ghs", function()
 					gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-				end)
-
+				end, { desc = "Stage hunk" })
 				map("v", "<leader>ghr", function()
 					gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-				end)
+				end, { desc = "Reset hunk" })
 
-				map("n", "<leader>ghp", gitsigns.preview_hunk_inline)
-
-				map("n", "<leader>ghb", function()
-					gitsigns.blame_line({ full = true })
-				end)
-
-				map("n", "<leader>ghd", gitsigns.diffthis)
-
-				map("n", "<leader>ghD", function()
-					gitsigns.diffthis("~")
-				end)
+				map("n", "<leader>ghp", gitsigns.preview_hunk_inline, { desc = "Preview hunk" })
 			end,
 		})
 	end,
