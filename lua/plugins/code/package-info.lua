@@ -3,10 +3,11 @@ return {
 	dependencies = {
 		"MunifTanjim/nui.nvim",
 	},
-	enabled = false,
 	event = "BufEnter package.json",
 	opts = function()
 		local opts = {
+			-- autostart = false,
+			-- hide_up_to_date = true,
 			colors = {
 				up_to_date = "#3C4048", -- Text color for up to date dependency virtual text
 				outdated = "#d19a66", -- Text color for outdated dependency virtual text
@@ -21,4 +22,13 @@ return {
 		vim.cmd([[highlight PackageInfoOutdatedVersion guifg=]] .. opts.colors.outdated)
 		vim.cmd([[highlight PackageInfoInvalidVersion guifg=]] .. opts.colors.outdated)
 	end,
+	keys = {
+		{
+			"<leader>cd",
+			function()
+				require("package-info").show({ force = true })
+			end,
+			desc = "Show package info",
+		},
+	},
 }

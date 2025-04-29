@@ -1,7 +1,6 @@
 vim.filetype.add({
 	pattern = {
 		[".env.*"] = "sh",
-		["tsconfig*.json"] = "jsonc",
 		-- Mark huge files to disable features later.
 		[".*"] = function(path, bufnr)
 			return vim.bo[bufnr]

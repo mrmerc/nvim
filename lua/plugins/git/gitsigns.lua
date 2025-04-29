@@ -39,7 +39,7 @@ return {
 					else
 						gitsigns.nav_hunk("next")
 					end
-				end)
+				end, { desc = "Next change" })
 
 				map("n", "[c", function()
 					if vim.wo.diff then
@@ -47,7 +47,7 @@ return {
 					else
 						gitsigns.nav_hunk("prev")
 					end
-				end)
+				end, { desc = "Previous change" })
 
 				-- Actions
 				map("n", "<leader>ghs", gitsigns.stage_hunk, { desc = "Stage hunk" })
@@ -60,7 +60,8 @@ return {
 					gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
 				end, { desc = "Reset hunk" })
 
-				map("n", "<leader>ghp", gitsigns.preview_hunk_inline, { desc = "Preview hunk" })
+				map("n", "<leader>ghp", gitsigns.preview_hunk_inline, { desc = "Preview hunk (inline)" })
+				map("n", "<leader>ghP", gitsigns.preview_hunk, { desc = "Preview hunk" })
 			end,
 		})
 	end,

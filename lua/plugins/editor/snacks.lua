@@ -1,6 +1,6 @@
 local explorer_state = {
-	hidden = false,
-	ignored = false,
+	hidden = true,
+	ignored = true,
 }
 
 return {
@@ -70,8 +70,9 @@ return {
 				},
 			},
 			sources = {
+				--- @type snacks.picker.explorer.Config
 				explorer = {
-					hidden = false,
+					-- exclude = { ".git" },
 					auto_close = true,
 					win = {
 						list = {
@@ -135,21 +136,22 @@ return {
 					},
 				},
 				grep = {
-					preview = function(ctx)
-						local snacks = require("snacks")
-
-						local defaulty_preview_result = snacks.picker.preview.file(ctx)
-
-						local path = snacks.picker.util.path(ctx.item)
-						if not path then
-							vim.notify("Grep preview: cannot find path", vim.log.levels.ERROR)
-							return
-						end
-
-						ctx.preview:set_title(vim.fn.fnamemodify(path, ":p:."))
-
-						return defaulty_preview_result
-					end,
+					-- TODO: find a better way, this is a hack
+					-- preview = function(ctx)
+					-- 	local snacks = require("snacks")
+					--
+					-- 	local defaulty_preview_result = snacks.picker.preview.file(ctx)
+					--
+					-- 	local path = snacks.picker.util.path(ctx.item)
+					-- 	if not path then
+					-- 		vim.notify("Grep preview: cannot find path", vim.log.levels.ERROR)
+					-- 		return
+					-- 	end
+					--
+					-- 	ctx.preview:set_title(vim.fn.fnamemodify(path, ":p:."))
+					--
+					-- 	return defaulty_preview_result
+					-- end,
 					layout = {
 						layout = {
 							width = 0.8,
@@ -262,6 +264,13 @@ return {
 			desc = "Files",
 		},
 		{
+			"<leader>fd",
+			function()
+				Snacks.picker.lsp_definitions({ auto_confirm = false })
+			end,
+			desc = "LSP Definitions",
+		},
+		{
 			"<leader>fr",
 			function()
 				Snacks.picker.recent()
@@ -276,7 +285,7 @@ return {
 			desc = "Buffers",
 		},
 		{
-			"<leader>fs",
+			"<leader>fg",
 			function()
 				Snacks.picker.grep()
 			end,
