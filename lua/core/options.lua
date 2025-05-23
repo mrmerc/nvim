@@ -3,7 +3,6 @@ vim.diagnostic.config({
 		prefix = "",
 		spacing = 3,
 	},
-	update_in_insert = false,
 	severity_sort = true,
 	signs = {
 		text = {

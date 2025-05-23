@@ -4,14 +4,15 @@ return {
 	opts = function()
 		require("which-key").add({
 			{ "<leader>c", group = "Command" },
-			{ "<leader>f", group = "Find" },
 			{ "<leader>e", group = "Explorer" },
+			{ "<leader>f", group = "Find" },
 			{ "<leader>g", group = "Git" },
+			{ "<leader>h", group = "Harpoon" },
 			{ "<leader>l", group = "LSP" },
+			{ "<leader>o", group = "Options" },
+			{ "<leader>p", group = "Yanky History" },
 			{ "<leader>q", group = "Quit" },
 			{ "<leader>r", group = "Replace" },
-			{ "<leader>p", group = "Yanky History" },
-			{ "<leader>o", group = "Options" },
 			{ "<leader>w", group = "Window" },
 			{ "<leader>z", group = "Zen" },
 			{ "<leader><tab>", group = "Tab" },

@@ -1,5 +1,6 @@
 return {
 	"vuki656/package-info.nvim",
+	enabled = false,
 	dependencies = {
 		"MunifTanjim/nui.nvim",
 	},

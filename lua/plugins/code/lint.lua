@@ -31,7 +31,7 @@ return {
 	end,
 	opts = {
 		-- Events to trigger linters
-		events = { "BufWritePost", "BufReadPost", "InsertLeave" },
+		events = { "BufWritePost", "BufReadPost", "InsertLeave", "CursorHold" },
 		linters_by_ft = {
 			javascript = { "eslint_d", "biomejs" },
 			typescript = { "eslint_d", "biomejs" },

@@ -53,7 +53,7 @@ return {
 
 		completion = {
 			list = {
-				max_items = 50,
+				max_items = 20,
 				selection = {
 					auto_insert = false,
 				},
@@ -67,7 +67,15 @@ return {
 			documentation = {
 				auto_show = true,
 			},
-			accept = { auto_brackets = { enabled = false } },
+			accept = {
+				auto_brackets = {
+					enabled = true,
+					kind_resolution = {
+						enabled = true,
+						blocked_filetypes = { "typescriptreact", "javascriptreact", "vue" },
+					},
+				},
+			},
 		},
 
 		signature = {

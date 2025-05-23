@@ -80,4 +80,18 @@ map("v", "<leader>/", "gc", { desc = "Toggle comment", remap = true })
 
 -- Quit
 map("n", "<leader>qq", "<cmd>qa<CR>", { desc = "Quit nvim" })
-map("n", "<leader>qb", "<cmd>%bd|e#<CR>", { desc = "Quit all buffers except last" })
+map("n", "<leader>qb", function()
+	local opened_buffers = vim.api.nvim_list_bufs()
+	local closed_buffers = 0
+
+	for _, id in ipairs(opened_buffers) do
+		local current_buffer = vim.api.nvim_win_get_buf(0)
+
+		if current_buffer ~= id then
+			vim.api.nvim_buf_delete(id, {})
+			closed_buffers = closed_buffers + 1
+		end
+	end
+
+	vim.notify(string.format("Closed %d buffers", closed_buffers))
+end, { desc = "Quit all buffers except current" })
