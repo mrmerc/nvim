@@ -69,6 +69,12 @@ return {
 				}
 				---@diagnostic disable-next-line: param-type-mismatch
 				highlights.LspInlayHint = vim.tbl_deep_extend("force", highlights.LspInlayHint, { bg = "" })
+				-- Syntax hl
+				highlights["@variable.builtin"] = "@type.builtin"
+				highlights["@variable.parameter"] = {
+					bold = true,
+					fg = "#a6e3f5",
+				}
 			end,
 		})
 

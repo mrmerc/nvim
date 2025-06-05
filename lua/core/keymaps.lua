@@ -9,8 +9,8 @@ map({ "n", "i" }, "<ESC>", "<cmd>nohl<CR><ESC>", { desc = "Clear search highligh
 map({ "n", "v" }, "<C-s>", ":silent wa<CR>", { desc = "Save all buffers", silent = true })
 map("i", "<C-s>", "<ESC>:silent wa<CR>", { desc = "Save all buffers", silent = true })
 
--- Toggle
-map("n", "<leader>tr", "<cmd>set rnu!<CR>", { desc = "Toggle relative number" })
+-- Options
+map("n", "<leader>or", "<cmd>set rnu!<CR>", { desc = "Toggle relative number" })
 
 -- Better Redo
 map("n", "U", "<C-r>", { desc = "Redo" })
@@ -63,12 +63,10 @@ map("n", "<C-j>", "<C-W>j", { desc = "Move down to window" })
 map("n", "<C-k>", "<C-W>k", { desc = "Move up to window" })
 map("n", "<C-h>", "<C-W>h", { desc = "Move left to window" })
 map("n", "<C-l>", "<C-W>l", { desc = "Move right to window" })
-
--- Resize window using <shift> arrow keys
-map("n", "<S-Up>", "<cmd>resize +2<CR>", { desc = "Window horizontal size up" })
-map("n", "<S-Down>", "<cmd>resize -2<CR>", { desc = "Window horizontal size down" })
-map("n", "<S-Left>", "<cmd>vertical resize -2<CR>", { desc = "Window vertical size up" })
-map("n", "<S-Right>", "<cmd>vertical resize +2<CR>", { desc = "Window vertical size up" })
+map("n", "<S-j>", "<cmd>resize -2<CR>", { desc = "Window horizontal size down" })
+map("n", "<S-k>", "<cmd>resize +2<CR>", { desc = "Window horizontal size up" })
+map("n", "<S-h>", "<cmd>vertical resize -2<CR>", { desc = "Window vertical size up" })
+map("n", "<S-l>", "<cmd>vertical resize +2<CR>", { desc = "Window vertical size up" })
 
 -- Tabs
 map("n", "<leader><tab><tab>", "<cmd>tabnew<cr>", { desc = "New Tab" })
@@ -76,6 +74,12 @@ map("n", "]<tab>", "<cmd>tabnext<cr>", { desc = "Next Tab" })
 map("n", "[<tab>", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
 map("n", "<leader><tab>x", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 map("n", "<leader><tab>o", "<cmd>tabonly<cr>", { desc = "Close Other Tabs" })
+
+-- Terminal
+map("t", "<ESC>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+map("n", "<leader>t", function()
+	require("custom.terminal").open_list_or_create_terminal()
+end, { desc = "Open terminal" })
 
 -- Code comments
 map("n", "<leader>/", "gcc", { desc = "Toggle comment", remap = true })

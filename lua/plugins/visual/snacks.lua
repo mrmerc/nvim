@@ -84,7 +84,7 @@ return {
 		dim = { enabled = true },
 		styles = {
 			---@diagnostic disable-next-line: missing-fields
-			["notification.history"] = {
+			["notification_history"] = {
 				---@diagnostic disable-next-line: missing-fields
 				wo = {
 					number = false,

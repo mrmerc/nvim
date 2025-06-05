@@ -11,10 +11,11 @@ return {
 			{ "<leader>q", group = "Quit" },
 			{ "<leader>r", group = "Replace" },
 			{ "<leader>s", group = "Session" },
-			{ "<leader>t", group = "Toggle" },
+			{ "<leader>t", group = "Terminal" },
+			{ "<leader>o", group = "Options" },
 			{ "<leader>w", group = "Window" },
 			{ "<leader>z", group = "Zen" },
-			{ "<leader><tab>", group = "[TAB]" },
+			{ "<leader><tab>", group = "Tab" },
 		})
 
 		return {

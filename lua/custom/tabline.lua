@@ -27,6 +27,11 @@ local get_title = function(current_buf)
 	elseif filetype == "NvimTree" then
 		return "NvimTree"
 	elseif buftype == "terminal" then
+		local term_title = vim.api.nvim_buf_get_var(current_buf, "term_title")
+		if term_title ~= nil and term_title ~= "" then
+			return term_title
+		end
+
 		local _, mtch = string.match(filename, "term:(.*):(%a+)")
 		return mtch ~= nil and mtch or vim.fn.fnamemodify(vim.env.SHELL, ":t")
 	elseif filename == "" then
