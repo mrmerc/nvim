@@ -1,3 +1,22 @@
+---@param exclude string[] | nil
+---@return nil
+local function enable_lsp(exclude)
+	local path = vim.fn.stdpath("config") .. "/after/lsp"
+	local lsp_list = vim.fn.glob(path .. "/*", false, true)
+
+	for _, lsp_path in ipairs(lsp_list) do
+		local lsp_name = vim.fn.fnamemodify(lsp_path, ":t:r")
+
+		if exclude and vim.tbl_contains(exclude, lsp_name) then
+			goto continue
+		end
+
+		vim.lsp.enable(lsp_name)
+
+		::continue::
+	end
+end
+
 local default_options = {
 	codelens = {
 		enabled = true,
@@ -25,7 +44,7 @@ vim.lsp.config("*", {
 	capabilities = default_capabilities,
 })
 
-vim.lsp.enable({ "lua_ls", "html", "emmet_ls", "vtsls", "volar", "svelte", "gopls", "jsonls" })
+enable_lsp()
 
 local lsp_group = vim.api.nvim_create_augroup("UserLspConfig", {})
 
