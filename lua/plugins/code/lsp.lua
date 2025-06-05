@@ -8,64 +8,89 @@ return {
 		{ "folke/lazydev.nvim", opts = {}, ft = "lua" },
 	},
 	config = function()
-		-- print(vim.inspect(require("mason-registry").get_installed_packages()))
-		-- import lspconfig plugin
 		local lspconfig = require("lspconfig")
-
-		-- import mason_lspconfig plugin
 		local mason_lspconfig = require("mason-lspconfig")
 
+		local augroup = vim.api.nvim_create_augroup("UserLspConfig", {})
+
+		-- TODO: For nvim 0.11
+		-- vim.api.nvim_create_autocmd("LspNotify", {
+		-- 	group = augroup,
+		-- 	callback = function(args)
+		-- 		if args.data.method == "textDocument/didOpen" then
+		-- 			vim.lsp.foldclose("imports", vim.fn.bufwinid(args.buf))
+		-- 		end
+		-- 	end,
+		-- })
+
+		-- TODO: For nvim 0.11
+		-- vim.api.nvim_create_autocommand("LspAttach", {
+		-- 	group = augroup,
+		-- 	callback = function(args)
+		-- 		local client = vim.lsp.get_client_by_id(args.data.client_id)
+		-- 		if not client then
+		-- 			vim.notify(
+		-- 				string.format("Unable to get client by id: %s", args.data.client_id),
+		-- 				vim.log.levels.ERROR
+		-- 			)
+		-- 			return
+		-- 		end
+		--
+		-- 		if client:supports_method("textDocument/foldingRange") then
+		-- 			vim.wo.foldexpr = "v:lua.vim.lsp.foldexpr()"
+		-- 		end
+		-- 	end,
+		-- })
+
 		vim.api.nvim_create_autocmd("LspAttach", {
-			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-			callback = function(ev)
-				-- Buffer local mappings.
-				-- See `:help vim.lsp.*` for documentation on any of the below functions
-				local opts = { buffer = ev.buf, silent = true }
+			group = augroup,
+			callback = function(args)
+				local opts = { buffer = args.buf, silent = true } -- Buffer local mappings.
 
 				local map = vim.keymap.set
-				-- set keybinds
+
 				opts.desc = "Show LSP references"
-				map("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
+				map("n", "gR", "<cmd>Telescope lsp_references<CR>", opts)
 
 				opts.desc = "Go to declaration"
-				map("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
+				map("n", "gD", vim.lsp.buf.declaration, opts)
 
 				opts.desc = "Show LSP definitions"
-				map("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
+				map("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
 
 				opts.desc = "Show LSP implementations"
-				map("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
+				map("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
 
 				opts.desc = "Show LSP type definitions"
-				map("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
+				map("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts)
 
 				opts.desc = "See available code actions"
-				map({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
+				map({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, opts)
 
 				opts.desc = "Smart rename"
-				map("n", "<leader>lrn", vim.lsp.buf.rename, opts) -- smart rename
+				map("n", "<leader>lrn", vim.lsp.buf.rename, opts)
 
 				opts.desc = "Show buffer diagnostics"
-				map("n", "<leader>lD", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
+				map("n", "<leader>lD", "<cmd>Telescope diagnostics bufnr=0<CR>", opts)
 
 				opts.desc = "Show line diagnostics"
-				map("n", "<leader>ld", vim.diagnostic.open_float, opts) -- show diagnostics for line
+				map("n", "<leader>ld", vim.diagnostic.open_float, opts)
 
 				opts.desc = "Go to previous diagnostic"
-				map("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
+				map("n", "[d", vim.diagnostic.goto_prev, opts)
 
 				opts.desc = "Go to next diagnostic"
-				map("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
+				map("n", "]d", vim.diagnostic.goto_next, opts)
 
 				opts.desc = "Show documentation for what is under cursor"
-				map("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
+				map("n", "K", vim.lsp.buf.hover, opts)
 
 				opts.desc = "Restart LSP"
-				map("n", "<leader>lrr", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
+				map("n", "<leader>lrr", ":LspRestart<CR>", opts)
 			end,
 		})
 
-		-- used to enable autocompletion (assign to every lsp server config)
+		-- enable autocompletion (assign to every lsp server config)
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 		local handlers_opts = {
@@ -83,26 +108,28 @@ return {
 			handlers = handlers,
 		}
 
+		local with_default = function(config)
+			return vim.tbl_extend("error", config, default_config)
+		end
+
 		mason_lspconfig.setup_handlers({
-			-- default handler for installed servers
 			function(server_name)
 				lspconfig[server_name].setup(default_config)
 			end,
 			["html"] = function()
-				lspconfig.html.setup(vim.tbl_extend("error", {
+				lspconfig.html.setup(with_default({
 					filetypes = { "html", "gotmpl" },
-				}, default_config))
+				}))
 			end,
 			["emmet_ls"] = function()
-				lspconfig["emmet_ls"].setup(vim.tbl_extend("error", {
+				lspconfig["emmet_ls"].setup(with_default({
 					filetypes = { "html", "css", "scss" },
-				}, default_config))
+				}))
 			end,
 			["lua_ls"] = function()
-				lspconfig["lua_ls"].setup(vim.tbl_extend("error", {
+				lspconfig["lua_ls"].setup(with_default({
 					settings = {
 						Lua = {
-							-- make the language server recognize "vim" global
 							diagnostics = {
 								globals = { "vim" },
 							},
@@ -115,12 +142,22 @@ return {
 							codelens = {
 								enable = true,
 							},
+							workspace = {
+								library = {
+									vim.fn.expand("$VIMRUNTIME/lua"),
+									vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
+									vim.fn.stdpath("data") .. "/lazy/lazy.nvim/lua/lazy",
+									"${3rd}/luv/library",
+								},
+								maxPreload = 100000,
+								preloadFileSize = 10000,
+							},
 						},
 					},
-				}, default_config))
+				}))
 			end,
 			["ts_ls"] = function()
-				lspconfig.ts_ls.setup(vim.tbl_extend("error", {
+				lspconfig.ts_ls.setup(with_default({
 					init_options = {
 						plugins = {
 							{
@@ -144,16 +181,26 @@ return {
 							includeInlayPropertyDeclarationTypeHints = true,
 							includeInlayFunctionLikeReturnTypeHints = true,
 							includeInlayEnumMemberValueHints = true,
-							-- Code Lens preferences
+							-- Codelens preferences
 							implementationsCodeLens = { enabled = true },
 							referencesCodeLens = { enabled = true, showOnAllFunctions = true },
 						},
 					},
-					filetypes = { "typescript", "javascript", "vue" },
-				}, default_config))
+					filetypes = { "typescript", "javascript" },
+				}))
+			end,
+			["volar"] = function()
+				lspconfig.volar.setup({
+					filetypes = { "vue" },
+					init_options = {
+						vue = {
+							hybridMode = false,
+						},
+					},
+				})
 			end,
 			["gopls"] = function()
-				lspconfig.gopls.setup(vim.tbl_extend("error", {
+				lspconfig.gopls.setup(with_default({
 					settings = {
 						gopls = {
 							gofumpt = true,
@@ -203,7 +250,7 @@ return {
 							}
 						end
 					end,
-				}, default_config))
+				}))
 			end,
 		})
 	end,

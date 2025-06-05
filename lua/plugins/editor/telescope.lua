@@ -5,7 +5,6 @@ return {
 		"nvim-tree/nvim-web-devicons",
 		"folke/todo-comments.nvim",
 		"natecraddock/telescope-zf-native.nvim",
-		"telescope/_extensions",
 	},
 	opts = function()
 		local telescope = require("telescope")
@@ -59,8 +58,8 @@ return {
 				sorting_strategy = "ascending",
 				mappings = {
 					i = {
-						["<C-k>"] = actions.move_selection_previous, -- move to prev result
-						["<C-j>"] = actions.move_selection_next, -- move to next result
+						["<C-k>"] = actions.move_selection_previous,
+						["<C-j>"] = actions.move_selection_next,
 					},
 				},
 			},
@@ -93,9 +92,7 @@ return {
 		})
 
 		telescope.load_extension("zf-native")
-		telescope.load_extension("package_scripts")
 
-		-- set keymaps
 		local map = vim.keymap.set
 
 		map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "Find files (cwd)" })
