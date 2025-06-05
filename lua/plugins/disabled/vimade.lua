@@ -4,10 +4,18 @@ return {
 	event = "VimEnter",
 	config = function()
 		require("vimade").setup({
-			-- ncmode = "windows",
-			-- groupscrollbind = true,
 			basebg = require("utils.colors").colors.bg,
 			fadelevel = 0.4,
+			blocklist = {
+				default = {
+					buf_opts = {
+						filetype = { "DiffviewFiles" },
+					},
+					win_opts = {
+						diff = true,
+					},
+				},
+			},
 		})
 	end,
 }

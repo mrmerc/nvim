@@ -29,8 +29,12 @@ return {
 		lint.linters_by_ft = {
 			javascript = { "eslint_d" },
 			typescript = { "eslint_d" },
-			vue = { "eslint_d" },
+			vue = { "eslint_d", "stylelint" },
+			css = { "stylelint" },
+			scss = { "stylelint" },
 			sql = { "sqlfluff" },
+			json = { "jq" },
+			yaml = { "yq" },
 		}
 
 		local function lint_file()

@@ -97,10 +97,9 @@ return {
 						end,
 					},
 					layout = {
-						-- preset = "vscode",
 						layout = {
-							-- row = 3,
-							-- height = 0.8,
+							width = 0.5,
+							height = 0.9,
 							position = "float",
 						},
 					},
@@ -124,11 +123,6 @@ return {
 					},
 				},
 				notifications = {
-					layout = {
-						preset = "ivy",
-					},
-				},
-				files = {
 					layout = {
 						preset = "ivy",
 					},

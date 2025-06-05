@@ -1,8 +1,7 @@
 return {
 	"chrisgrieser/nvim-spider",
-	opts = {
-		consistentOperatorPending = true,
-	},
+	lazy = true,
+	opts = {},
 	keys = {
 		{
 			"w",
@@ -11,28 +10,22 @@ return {
 			desc = "Spider-W",
 		},
 		{
-			"e",
-			"<cmd>lua require('spider').motion('e')<CR>",
-			mode = { "n", "o", "x" },
-			desc = "Spider-E",
-		},
-		{
 			"b",
 			"<cmd>lua require('spider').motion('b')<CR>",
 			mode = { "n", "o", "x" },
 			desc = "Spider-B",
 		},
 		{
-			"<C-f>",
-			"<Esc>l<cmd>lua require('spider').motion('w')<CR>i",
-			mode = "i",
-			desc = "Spider-W (Insert)",
+			"e",
+			"<cmd>lua require('spider').motion('e')<CR>",
+			mode = { "n", "o", "x" },
+			desc = "Spider-E",
 		},
 		{
-			"<C-b>",
-			"<Esc><cmd>lua require('spider').motion('b')<CR>i",
-			mode = "i",
-			desc = "Spider-B (Insert)",
+			"ge",
+			"<cmd>lua require('spider').motion('ge')<CR>",
+			mode = { "n", "o", "x" },
+			desc = "Spider-GE",
 		},
 	},
 }
