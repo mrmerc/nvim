@@ -2,16 +2,21 @@ vim.g.mapleader = " "
 
 local map = vim.keymap.set
 
--- General
+-- Highlihhts
 map({ "n", "i" }, "<ESC>", "<cmd>nohl<CR><ESC>", { desc = "Clear search highlights" })
-map("n", ";", ":", { desc = "CMD" })
 
 -- Save buffer
-map({ "n", "x", "s" }, "<C-s>", "<cmd>silent wa<CR><ESC>", { desc = "Save all buffers", silent = true })
-map("i", "<C-s>", "<ESC><cmd>silent wa<CR>", { desc = "Save all buffers", silent = true })
+map({ "n", "v" }, "<C-s>", ":silent wa<CR>", { desc = "Save all buffers", silent = true })
+map("i", "<C-s>", "<ESC>:silent wa<CR>", { desc = "Save all buffers", silent = true })
 
 -- Toggle
-map("n", "<leader>nr", "<cmd>set rnu!<CR>", { desc = "Toggle relative number" })
+map("n", "<leader>tr", "<cmd>set rnu!<CR>", { desc = "Toggle relative number" })
+
+-- Up/Down for wrapped lines
+map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
+map({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
+map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
+map({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 
 -- Searching
 map("n", "n", "'Nn'[v:searchforward].'zzzv'", { expr = true, desc = "Next Search Result" })
@@ -21,14 +26,20 @@ map("n", "N", "'nN'[v:searchforward].'zzzv'", { expr = true, desc = "Prev Search
 map("x", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Search Result" })
 map("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Search Result" })
 
+-- void
+map({ "n", "v" }, "<leader>d", [["_d]], { desc = "Delete (void)" })
+map("x", "<leader>p", [["_dP]], { desc = "Paste (void)" })
+
 -- Replace
-map("n", "<leader>rr", ":%s///g<Left><Left><Left>", { desc = "Replace (buffer)" })
-map("v", "<leader>rr", ":s///g<Left><Left><Left>", { desc = "Replace selection (buffer)" })
-map("n", "<leader>rw", ":%s/\\<<C-r><C-w>\\>//g<Left><Left>", { desc = "Replace word under cursor (buffer)" })
+map("n", "<leader>rr", ":%s/", { desc = "Replace (buffer)" })
+map("n", "<leader>rw", ":%s/<C-r><C-w>", { desc = "Replace word under cursor (buffer)" })
+map("v", "<leader>rr", ":s/", { desc = "Replace within selection" })
+map("v", "<leader>rs", "y:%s/\\V<C-r>0", { desc = "Replace selected (buffer)" })
 
 -- Better indenting
 map("v", "<Tab>", ">gv")
 map("v", "<S-Tab>", "<gv")
+map("i", "<ESC>", "<Space><BS><ESC>", { desc = "Preserve indent on new empty line", noremap = true })
 
 -- Add undo break-points
 map("i", ",", ",<c-g>u")
@@ -53,8 +64,8 @@ map("n", "<S-Right>", "<cmd>vertical resize +2<CR>", { desc = "Window vertical s
 
 -- Tabs
 map("n", "<leader><tab><tab>", "<cmd>tabnew<cr>", { desc = "New Tab" })
-map("n", "<leader><tab>]", "<cmd>tabnext<cr>", { desc = "Next Tab" })
-map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
+map("n", "]<tab>", "<cmd>tabnext<cr>", { desc = "Next Tab" })
+map("n", "[<tab>", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
 map("n", "<leader><tab>x", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 map("n", "<leader><tab>o", "<cmd>tabonly<cr>", { desc = "Close Other Tabs" })
 

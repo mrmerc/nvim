@@ -37,4 +37,17 @@ return {
 			},
 		},
 	},
+	{
+		"echasnovski/mini.comment",
+		version = "*",
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			"JoosepAlviste/nvim-ts-context-commentstring",
+		},
+		opts = {
+			hooks = {
+				-- pre = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+			},
+		},
+	},
 }
