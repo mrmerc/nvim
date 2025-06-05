@@ -1,6 +1,5 @@
 local M = {}
 
-M.colors = dofile(os.getenv("HOME") .. "/.m-colors.lua")
+M.colors = dofile(os.getenv("HOME") .. "/.config/m-colors.lua")
 
 return M
-
