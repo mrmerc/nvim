@@ -3,6 +3,7 @@ return {
 	dependencies = {
 		"MunifTanjim/nui.nvim",
 	},
+	enabled = false,
 	event = "BufEnter package.json",
 	opts = function()
 		local opts = {
