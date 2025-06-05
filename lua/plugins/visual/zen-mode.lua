@@ -14,6 +14,12 @@ return {
 				font = "+1", -- (10% increase per step)
 			},
 		},
+		on_open = function()
+			require("snacks").dim.enable()
+		end,
+		on_close = function()
+			require("snacks").dim.disable()
+		end,
 	},
 	keys = {
 		{ "<leader>z", "<cmd>ZenMode<cr>", desc = "Toggle Zen Mode" },

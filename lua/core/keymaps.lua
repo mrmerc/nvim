@@ -12,6 +12,14 @@ map("i", "<C-s>", "<ESC>:silent wa<CR>", { desc = "Save all buffers", silent = t
 -- Toggle
 map("n", "<leader>tr", "<cmd>set rnu!<CR>", { desc = "Toggle relative number" })
 
+-- Better Redo
+map("n", "U", "<C-r>", { desc = "Redo" })
+
+-- Execute macro over a visual region.
+vim.keymap.set("x", "@", function()
+	return ":norm @" .. vim.fn.getcharstr() .. "<cr>"
+end, { expr = true })
+
 -- Up/Down for wrapped lines
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
 map({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })

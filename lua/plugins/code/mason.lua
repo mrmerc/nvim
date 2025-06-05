@@ -16,6 +16,7 @@ return {
 		-- enable mason and configure icons
 		mason.setup({
 			ui = {
+				border = "rounded",
 				icons = {
 					package_installed = "✓",
 					package_pending = "➜",
@@ -24,6 +25,7 @@ return {
 			},
 		})
 
+		---@diagnostic disable-next-line: missing-fields
 		mason_lspconfig.setup({
 			ensure_installed = {
 				"ts_ls",

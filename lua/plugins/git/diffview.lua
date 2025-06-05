@@ -14,6 +14,9 @@ return {
 			},
 		},
 		hooks = {
+			view_opened = function()
+				vim.api.nvim_tabpage_set_var(0, "name", "Diffview")
+			end,
 			diff_buf_read = function()
 				vim.opt_local.wrap = false
 			end,

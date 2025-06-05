@@ -13,6 +13,7 @@ return {
 			{ "<leader>s", group = "Session" },
 			{ "<leader>t", group = "Toggle" },
 			{ "<leader>w", group = "Window" },
+			{ "<leader>z", group = "Zen" },
 			{ "<leader><tab>", group = "[TAB]" },
 		})
 

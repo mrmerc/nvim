@@ -22,25 +22,26 @@ return {
 		-- 		end
 		-- 	end,
 		-- })
-
-		-- TODO: For nvim 0.11
-		-- vim.api.nvim_create_autocommand("LspAttach", {
-		-- 	group = augroup,
-		-- 	callback = function(args)
-		-- 		local client = vim.lsp.get_client_by_id(args.data.client_id)
-		-- 		if not client then
-		-- 			vim.notify(
-		-- 				string.format("Unable to get client by id: %s", args.data.client_id),
-		-- 				vim.log.levels.ERROR
-		-- 			)
-		-- 			return
-		-- 		end
 		--
-		-- 		if client:supports_method("textDocument/foldingRange") then
-		-- 			vim.wo.foldexpr = "v:lua.vim.lsp.foldexpr()"
-		-- 		end
-		-- 	end,
-		-- })
+
+		vim.api.nvim_create_autocmd("LspAttach", {
+			group = augroup,
+			callback = function(args)
+				local client = vim.lsp.get_client_by_id(args.data.client_id)
+				if not client then
+					vim.notify(
+						string.format("Unable to get client by id: %s", args.data.client_id),
+						vim.log.levels.ERROR
+					)
+					return
+				end
+
+				-- TODO: For nvim 0.11
+				-- if client:supports_method("textDocument/foldingRange") then
+				-- 	vim.wo.foldexpr = "v:lua.vim.lsp.foldexpr()"
+				-- end
+			end,
+		})
 
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = augroup,
@@ -174,12 +175,12 @@ return {
 							-- Inlay Hints preferences
 							interactiveInlayHints = true,
 							includeInlayParameterNameHints = "all",
-							includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+							includeInlayParameterNameHintsWhenArgumentMatchesName = false,
 							includeInlayFunctionParameterTypeHints = true,
-							includeInlayVariableTypeHints = true,
-							includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+							includeInlayVariableTypeHints = false,
+							includeInlayVariableTypeHintsWhenTypeMatchesName = false,
 							includeInlayPropertyDeclarationTypeHints = true,
-							includeInlayFunctionLikeReturnTypeHints = true,
+							includeInlayFunctionLikeReturnTypeHints = false,
 							includeInlayEnumMemberValueHints = true,
 							-- Codelens preferences
 							implementationsCodeLens = { enabled = true },
@@ -188,16 +189,6 @@ return {
 					},
 					filetypes = { "typescript", "javascript" },
 				}))
-			end,
-			["volar"] = function()
-				lspconfig.volar.setup({
-					filetypes = { "vue" },
-					init_options = {
-						vue = {
-							hybridMode = false,
-						},
-					},
-				})
 			end,
 			["gopls"] = function()
 				lspconfig.gopls.setup(with_default({

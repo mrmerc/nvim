@@ -3,12 +3,13 @@ return {
 	priority = 1000,
 	lazy = false,
 	---@type snacks.Config
+	---@diagnostic disable-next-line: missing-fields
 	opts = {
 		dashboard = {
 			enabled = true,
 			sections = {
 				{ section = "header", padding = 5 },
-				-- @type snacks.dashboard.Gen
+				---@type snacks.dashboard.Gen
 				function()
 					local stats = require("lazy.stats").stats()
 
@@ -78,6 +79,19 @@ return {
 			top_down = false,
 			style = "compact",
 		},
+		scroll = { enabled = true },
+		---@diagnostic disable-next-line: missing-fields
+		dim = { enabled = true },
+		styles = {
+			---@diagnostic disable-next-line: missing-fields
+			["notification.history"] = {
+				---@diagnostic disable-next-line: missing-fields
+				wo = {
+					number = false,
+					relativenumber = false,
+				},
+			},
+		},
 	},
 	keys = {
 		{
@@ -100,6 +114,30 @@ return {
 				require("snacks").notifier.show_history()
 			end,
 			desc = "Notification history",
+		},
+		{
+			"gg",
+			function()
+				local snacks = require("snacks")
+				vim.defer_fn(function()
+					snacks.scroll.enable()
+				end, 50)
+				snacks.scroll.disable()
+				vim.cmd("1")
+			end,
+			desc = "Go to first line (no animation)",
+		},
+		{
+			"G",
+			function()
+				local snacks = require("snacks")
+				vim.defer_fn(function()
+					snacks.scroll.enable()
+				end, 50)
+				snacks.scroll.disable()
+				vim.cmd("%")
+			end,
+			desc = "Go to last line (no animation)",
 		},
 	},
 }

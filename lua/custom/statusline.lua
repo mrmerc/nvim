@@ -1,10 +1,6 @@
 local M = {}
 
-local file_symbols = {
-	modified = "", -- Text to show when the file is modified.
-	readonly = "󰮕", -- Text to show when the file is non-modifiable or readonly.
-	unnamed = "󰘥", -- Text to show for unnamed buffers.
-}
+local icons = require("custom.icons")
 
 local statusline = ""
 
@@ -86,15 +82,15 @@ M.get_filename_with_icon = function()
 
 	if tail == "" then
 		tail = "No name"
-		table.insert(symbols, file_symbols.unnamed)
+		table.insert(symbols, icons.file_status.unnamed)
 	end
 
 	if vim.bo.modified then
-		table.insert(symbols, file_symbols.modified)
+		table.insert(symbols, icons.file_status.modified)
 	end
 
 	if vim.bo.modifiable == false or vim.bo.readonly == true then
-		table.insert(symbols, file_symbols.readonly)
+		table.insert(symbols, icons.file_status.readonly)
 	end
 
 	local file_name = tail .. (#symbols > 0 and " " .. table.concat(symbols, " ") or "")

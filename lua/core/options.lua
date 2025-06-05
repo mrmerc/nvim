@@ -20,6 +20,7 @@ vim.diagnostic.config({
 })
 
 vim.opt.statusline = require("custom.statusline").get_statusline()
+vim.opt.tabline = "%!v:lua.require('custom.tabline').get_tabline()"
 
 vim.opt.scrolloff = 10
 
@@ -42,6 +43,7 @@ vim.opt.shortmess:append("c")
 vim.opt.shortmess:append("s")
 
 vim.opt.mouse = "a" -- Enable mouse mode
+vim.opt.mousescroll = "ver:1,hor:2"
 vim.opt.showmode = false -- If in Insert, Replace or Visual mode put a message on the last line.
 vim.opt.updatetime = 250 -- If this many milliseconds nothing is typed the swap file will be written to disk
 vim.opt.timeoutlen = 300
