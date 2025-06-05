@@ -7,11 +7,26 @@ return {
 		{ "antosha417/nvim-lsp-file-operations", opts = {} },
 		{ "folke/lazydev.nvim", opts = {}, ft = "lua" },
 	},
-	config = function()
+	opts = {
+		codelens = {
+			enabled = true,
+		},
+		-- TODO: check LazyVim
+		-- capabilities = {
+		-- 	workspace = {
+		-- 		fileOperations = {
+		-- 			didRename = true,
+		-- 			willRename = true,
+		-- 		},
+		-- 	},
+		-- },
+	},
+	config = function(_, opts)
 		local lspconfig = require("lspconfig")
 		local mason_lspconfig = require("mason-lspconfig")
 
 		local augroup = vim.api.nvim_create_augroup("UserLspConfig", {})
+		local codelens_group = vim.api.nvim_create_augroup("CodeLens", {})
 
 		-- TODO: For nvim 0.11
 		-- vim.api.nvim_create_autocmd("LspNotify", {
@@ -22,7 +37,6 @@ return {
 		-- 		end
 		-- 	end,
 		-- })
-		--
 
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = augroup,
@@ -36,10 +50,31 @@ return {
 					return
 				end
 
+				local buffer = args.buf ---@type number
+
 				-- TODO: For nvim 0.11
 				-- if client:supports_method("textDocument/foldingRange") then
 				-- 	vim.wo.foldexpr = "v:lua.vim.lsp.foldexpr()"
 				-- end
+
+				-- codelens
+				if client.supports_method("textDocument/codeLens") and opts.codelens.enabled and vim.lsp.codelens then
+					vim.defer_fn(function()
+						vim.lsp.codelens.refresh()
+					end, 500)
+
+					vim.api.nvim_clear_autocmds({
+						buffer = buffer,
+						group = codelens_group,
+					})
+					vim.api.nvim_create_autocmd({ "BufEnter" }, {
+						group = codelens_group,
+						buffer = buffer,
+						callback = function()
+							vim.lsp.codelens.refresh()
+						end,
+					})
+				end
 			end,
 		})
 
@@ -56,8 +91,9 @@ return {
 				opts.desc = "Go to declaration"
 				map("n", "gD", vim.lsp.buf.declaration, opts)
 
-				opts.desc = "Show LSP definitions"
-				map("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
+				-- opts.desc = "Show LSP definitions"
+				-- map("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
+				map("n", "gd", vim.lsp.buf.definition, { desc = "Goto Definition" })
 
 				opts.desc = "Show LSP implementations"
 				map("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
@@ -71,11 +107,17 @@ return {
 				opts.desc = "Smart rename"
 				map("n", "<leader>lrn", vim.lsp.buf.rename, opts)
 
+				opts.desc = "LSP format"
+				map("n", "<leader>lf", vim.lsp.buf.format, opts)
+
 				opts.desc = "Show buffer diagnostics"
 				map("n", "<leader>lD", "<cmd>Telescope diagnostics bufnr=0<CR>", opts)
 
 				opts.desc = "Show line diagnostics"
 				map("n", "<leader>ld", vim.diagnostic.open_float, opts)
+
+				map({ "n", "v" }, "<leader>lc", vim.lsp.codelens.run, { desc = "Run Codelens" })
+				map("n", "<leader>lC", vim.lsp.codelens.refresh, { desc = "Refresh & Display Codelens" })
 
 				opts.desc = "Go to previous diagnostic"
 				map("n", "[d", vim.diagnostic.goto_prev, opts)
@@ -86,11 +128,14 @@ return {
 				opts.desc = "Show documentation for what is under cursor"
 				map("n", "K", vim.lsp.buf.hover, opts)
 
+				map("n", "gK", vim.lsp.buf.signature_help, { desc = "Signature Help" })
+
 				opts.desc = "Restart LSP"
 				map("n", "<leader>lrr", ":LspRestart<CR>", opts)
 			end,
 		})
 
+		-- local capabilities = require("cmp_nvim_lsp").default_capabilities()
 		local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 		local handlers_opts = {
@@ -139,7 +184,7 @@ return {
 							hint = {
 								enable = true,
 							},
-							codelens = {
+							codeLens = {
 								enable = true,
 							},
 							workspace = {
@@ -156,39 +201,70 @@ return {
 					},
 				}))
 			end,
-			["ts_ls"] = function()
-				lspconfig.ts_ls.setup(with_default({
+			["volar"] = function()
+				lspconfig.volar.setup(with_default({
 					init_options = {
-						plugins = {
-							{
-								name = "@vue/typescript-plugin",
-								location = require("mason-registry")
-									.get_package("vue-language-server")
-									:get_install_path() .. "/node_modules/@vue/language-server",
-								languages = { "vue" },
-								configNamespace = "typescript",
-								enableForWorkspaceTypeScriptVersions = true,
-							},
-						},
-						preferences = {
-							-- Inlay Hints preferences
-							interactiveInlayHints = true,
-							includeInlayParameterNameHints = "all",
-							includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-							includeInlayFunctionParameterTypeHints = true,
-							includeInlayVariableTypeHints = false,
-							includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-							includeInlayPropertyDeclarationTypeHints = true,
-							includeInlayFunctionLikeReturnTypeHints = false,
-							includeInlayEnumMemberValueHints = true,
-							-- Codelens preferences
-							implementationsCodeLens = { enabled = true },
-							referencesCodeLens = { enabled = true, showOnAllFunctions = true },
+						vue = {
+							hybridMode = true,
 						},
 					},
-					filetypes = { "typescript", "javascript", "vue" },
 				}))
 			end,
+			["vtsls"] = function()
+				lspconfig.vtsls.setup(with_default({
+					filetypes = { "typescript", "javascript", "vue" },
+					settings = {
+						complete_function_calls = true,
+						vtsls = {
+							enableMoveToFileCodeAction = true,
+							autoUseWorkspaceTsdk = true,
+							experimental = {
+								maxInlayHintLength = 30,
+								completion = {
+									enableServerSideFuzzyMatch = true,
+								},
+							},
+							tsserver = {
+								globalPlugins = {
+									{
+										name = "@vue/typescript-plugin",
+										location = require("mason-registry")
+											.get_package("vue-language-server")
+											:get_install_path() .. "/node_modules/@vue/language-server",
+										languages = { "vue" },
+										configNamespace = "typescript",
+										enableForWorkspaceTypeScriptVersions = true,
+									},
+								},
+							},
+						},
+						typescript = {
+							updateImportsOnFileMove = { enabled = "always" },
+							suggest = {
+								completeFunctionCalls = true,
+							},
+							inlayHints = {
+								enumMemberValues = { enabled = true },
+								functionLikeReturnTypes = { enabled = true },
+								parameterNames = { enabled = "literals" },
+								parameterTypes = { enabled = true },
+								propertyDeclarationTypes = { enabled = true },
+								variableTypes = { enabled = false },
+							},
+							referencesCodeLens = {
+								enabled = true,
+								showOnAllFunctions = true,
+							},
+							implementationsCodeLens = {
+								enabled = true,
+								showOnInterfaceMethods = true,
+							},
+						},
+					},
+				}))
+			end,
+			-- TODO: check later
+			-- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/plugins/extras/lang/go.lua
 			["gopls"] = function()
 				lspconfig.gopls.setup(with_default({
 					settings = {

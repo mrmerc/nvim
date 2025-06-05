@@ -177,4 +177,12 @@ M.get_statusline = function()
 	return statusline
 end
 
+vim.api.nvim_create_autocmd("DiagnosticChanged", {
+	callback = function()
+		vim.api.nvim__redraw({
+			statusline = true,
+		})
+	end,
+})
+
 return M

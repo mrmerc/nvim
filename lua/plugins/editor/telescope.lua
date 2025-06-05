@@ -6,7 +6,7 @@ return {
 		"folke/todo-comments.nvim",
 		"natecraddock/telescope-zf-native.nvim",
 	},
-	opts = function()
+	config = function()
 		local telescope = require("telescope")
 		local config = require("telescope.config")
 		local actions = require("telescope.actions")
@@ -58,6 +58,7 @@ return {
 				sorting_strategy = "ascending",
 				mappings = {
 					i = {
+						["<ESC>"] = actions.close,
 						["<C-k>"] = actions.move_selection_previous,
 						["<C-j>"] = actions.move_selection_next,
 					},

@@ -28,10 +28,10 @@ return {
 		---@diagnostic disable-next-line: missing-fields
 		mason_lspconfig.setup({
 			ensure_installed = {
-				"ts_ls",
 				"html",
 				"cssls",
 				"volar", -- Vue
+				"vtsls", -- TS
 				"lua_ls",
 				"emmet_ls",
 				"gopls",
