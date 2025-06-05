@@ -1,5 +1,7 @@
 return {
 	"tadaa/vimade",
+	enabled = false,
+	version = "v2.1.2",
 	event = "VeryLazy",
 	config = function()
 		-- local Fade = require("vimade.style.fade").Fade
@@ -21,16 +23,12 @@ return {
 			-- 		}),
 			-- 	}),
 			-- },
-			blocklist = {
-				default = {
-					buf_opts = { buftype = { "prompt", "terminal", "popup" } },
-					win_config = { relative = true },
-					buf_name = { "DiffviewFilePanel" },
-					-- buf_vars = { variable = {'match1', 'match2'} },
-					-- win_opts = { option = {'match1', 'match2' } },
-					-- win_vars = { variable = {'match1', 'match2'} },
-				},
-			},
+			-- blocklist = {
+			-- 	default = {
+			-- 		buf_opts = { buftype = { "prompt", "terminal", "popup" } },
+			-- 		win_config = { relative = true },
+			-- 	},
+			-- },
 		})
 	end,
 }

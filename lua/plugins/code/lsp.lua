@@ -26,7 +26,7 @@ return {
 		local mason_lspconfig = require("mason-lspconfig")
 
 		local augroup = vim.api.nvim_create_augroup("UserLspConfig", {})
-		local codelens_group = vim.api.nvim_create_augroup("CodeLens", {})
+		-- local codelens_group = vim.api.nvim_create_augroup("CodeLens", {})
 
 		-- TODO: For nvim 0.11
 		-- vim.api.nvim_create_autocmd("LspNotify", {
@@ -50,7 +50,7 @@ return {
 					return
 				end
 
-				local buffer = args.buf ---@type number
+				-- local buffer = args.buf ---@type number
 
 				-- TODO: For nvim 0.11
 				-- if client:supports_method("textDocument/foldingRange") then
@@ -63,17 +63,17 @@ return {
 						vim.lsp.codelens.refresh()
 					end, 500)
 
-					vim.api.nvim_clear_autocmds({
-						buffer = buffer,
-						group = codelens_group,
-					})
-					vim.api.nvim_create_autocmd({ "BufEnter" }, {
-						group = codelens_group,
-						buffer = buffer,
-						callback = function()
-							vim.lsp.codelens.refresh()
-						end,
-					})
+					-- vim.api.nvim_clear_autocmds({
+					-- 	buffer = buffer,
+					-- 	group = codelens_group,
+					-- })
+					-- vim.api.nvim_create_autocmd({ "BufEnter" }, {
+					-- 	group = codelens_group,
+					-- 	buffer = buffer,
+					-- 	callback = function()
+					-- 		vim.lsp.codelens.refresh()
+					-- 	end,
+					-- })
 				end
 			end,
 		})
@@ -85,22 +85,6 @@ return {
 
 				local map = vim.keymap.set
 
-				opts.desc = "Show LSP references"
-				map("n", "gR", "<cmd>Telescope lsp_references<CR>", opts)
-
-				opts.desc = "Go to declaration"
-				map("n", "gD", vim.lsp.buf.declaration, opts)
-
-				-- opts.desc = "Show LSP definitions"
-				-- map("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
-				map("n", "gd", vim.lsp.buf.definition, { desc = "Goto Definition" })
-
-				opts.desc = "Show LSP implementations"
-				map("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
-
-				opts.desc = "Show LSP type definitions"
-				map("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts)
-
 				opts.desc = "See available code actions"
 				map({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, opts)
 
@@ -109,9 +93,6 @@ return {
 
 				opts.desc = "LSP format"
 				map("n", "<leader>lf", vim.lsp.buf.format, opts)
-
-				opts.desc = "Show buffer diagnostics"
-				map("n", "<leader>lD", "<cmd>Telescope diagnostics bufnr=0<CR>", opts)
 
 				opts.desc = "Show line diagnostics"
 				map("n", "<leader>ld", vim.diagnostic.open_float, opts)

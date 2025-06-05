@@ -3,6 +3,7 @@ local WIDTH_RATIO = 0.5
 
 return {
 	"nvim-tree/nvim-tree.lua",
+	enabled = false,
 	dependencies = "nvim-tree/nvim-web-devicons",
 	init = function()
 		-- recommended settings from nvim-tree documentation
