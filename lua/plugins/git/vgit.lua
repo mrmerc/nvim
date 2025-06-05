@@ -18,7 +18,12 @@ return {
 			live_blame = {
 				enabled = false,
 			},
+			live_gutter = {
+				enabled = true,
+				edge_navigation = false, -- This allows users to navigate within a hunk
+			},
 			signs = {
+				priority = 1,
 				definitions = {
 					GitSignsAdd = {
 						text = "▎",
