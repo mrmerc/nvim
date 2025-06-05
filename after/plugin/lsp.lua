@@ -17,36 +17,38 @@ local function enable_lsp(exclude)
 	end
 end
 
+---@type string[]
+local second_lsps = {
+	"volar",
+	"svelte",
+}
+
 ---@param client_id integer
 ---@return boolean
 local is_second_lsp = function(client_id)
 	local client = vim.lsp.get_client_by_id(client_id)
 
-	if client and client.name == "volar" then
+	if client and vim.tbl_contains(second_lsps, client.name) then
 		return true
 	end
 
 	return false
 end
 
-local default_options = {
-	---@type lsp.ClientCapabilities
-	capabilities = {
+local default_capabilities = vim.tbl_deep_extend(
+	"force",
+	{},
+	vim.lsp.protocol.make_client_capabilities(),
+	require("blink.cmp").get_lsp_capabilities(),
+	{
+		--- @type lsp.WorkspaceClientCapabilities
 		workspace = {
 			fileOperations = {
 				didRename = true,
 				willRename = true,
 			},
 		},
-	},
-}
-
-local default_capabilities = vim.tbl_deep_extend(
-	"force",
-	{},
-	vim.lsp.protocol.make_client_capabilities(),
-	require("blink.cmp").get_lsp_capabilities(),
-	default_options.capabilities or {}
+	}
 )
 
 vim.lsp.config("*", {

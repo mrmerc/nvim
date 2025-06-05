@@ -19,10 +19,16 @@ return {
 		typescript = {
 			tsdk = "",
 		},
+		vue = {
+			hybridMode = true,
+		},
 	},
 	before_init = function(_, config)
 		if config.init_options and config.init_options.typescript and config.init_options.typescript.tsdk == "" then
 			config.init_options.typescript.tsdk = get_typescript_server_path(config.root_dir)
 		end
+	end,
+	on_attach = function(client)
+		client.server_capabilities.documentFormattingProvider = false
 	end,
 }

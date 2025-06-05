@@ -39,9 +39,9 @@ return {
 			svelte = { "eslint_d", "stylelint" },
 			css = { "stylelint", "biomejs" },
 			scss = { "stylelint", "biomejs" },
-
 			sql = { "sqlfluff" },
 			json = { "jq", "biomejs" },
+			jsonc = { "biomejs" },
 			yaml = { "yq" },
 			-- Use the "*" filetype to run linters on all filetypes.
 			-- ['*'] = { 'global linter' },

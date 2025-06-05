@@ -27,25 +27,21 @@ return {
 							return items
 						end
 
-						return vim.iter(items)
-							:filter(
-								---@param item blink.cmp.CompletionItem
-								function(item)
-									local kind = require("blink.cmp.types").CompletionItemKind
-									local label = item.label
+						---@param item blink.cmp.CompletionItem
+						return vim.tbl_filter(function(item)
+							local kind = require("blink.cmp.types").CompletionItemKind
+							local label = item.label
 
-									-- filter out v-bind: and v-on: for vue files
-									if
-										(item.kind == kind.Field and label:match("v-bind"))
-										or (item.kind == kind.Event and label:match("v-on"))
-									then
-										return false
-									end
+							-- filter out v-bind: and v-on: for vue files
+							if
+								(item.kind == kind.Field and label:match("v-bind"))
+								or (item.kind == kind.Event and label:match("v-on"))
+							then
+								return false
+							end
 
-									return true
-								end
-							)
-							:totable()
+							return true
+						end, items)
 					end,
 				},
 			},

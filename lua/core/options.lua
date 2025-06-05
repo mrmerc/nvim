@@ -48,6 +48,7 @@ vim.opt.virtualedit = "block" -- Allow cursor to move where there is no text in 
 vim.opt.smoothscroll = true
 vim.opt.undofile = true
 vim.opt.backup = true
+vim.opt.backupcopy = "yes"
 vim.opt.backupdir = os.getenv("HOME") .. "/.local/state/nvim/backup//"
 
 -- Tabs & indentation

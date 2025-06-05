@@ -14,7 +14,8 @@ return {
 				css = { "stylelint", "prettierd", "biome" },
 				scss = { "stylelint", "prettierd", "biome" },
 				html = { "prettierd" },
-				json = { "fixjson", "prettierd", "biome", lsp_format = "last" },
+				json = { "fixjson", "prettierd", "biome" },
+				jsonc = { "prettierd", "biome" },
 				yaml = { --[["yq",]]
 					"prettierd",
 				},
@@ -54,10 +55,12 @@ return {
 					args = { "fix", "--stdin-filename", "$FILENAME" },
 				},
 			},
+			---@type conform.DefaultFormatOpts
 			default_format_opts = {
 				timeout_ms = 3000,
-				lsp_format = "last",
+				lsp_format = "first",
 			},
+			---@type conform.FormatOpts
 			format_on_save = {}, -- enables format on save
 		})
 	end,

@@ -1,6 +1,7 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
-	event = { "BufReadPre", "BufNewFile" },
+	lazy = false,
+	branch = "master",
 	build = ":TSUpdate",
 	-- NOTE: do not change to opts, configuration done via nvim-treesitter.configs
 	config = function()

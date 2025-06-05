@@ -229,7 +229,7 @@ return {
 			style = "compact",
 		},
 		scroll = {},
-		-- input = {},
+		input = {},
 		explorer = {},
 		styles = {
 			input = {
