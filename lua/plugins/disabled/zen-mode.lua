@@ -1,5 +1,6 @@
 return {
 	"folke/zen-mode.nvim",
+	enabled = false,
 	opts = {
 		window = {
 			backdrop = 0.5, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
@@ -8,18 +9,15 @@ return {
 			height = 1, -- height of the Zen window
 		},
 		plugins = {
+			options = {
+				winborder = "none",
+			},
 			wezterm = {
 				enabled = false,
 				-- can be either an absolute font size or the number of incremental steps
 				font = "+1", -- (10% increase per step)
 			},
 		},
-		on_open = function()
-			require("snacks").dim.enable()
-		end,
-		on_close = function()
-			require("snacks").dim.disable()
-		end,
 	},
 	keys = {
 		{ "<leader>z", "<cmd>ZenMode<cr>", desc = "Toggle Zen Mode" },

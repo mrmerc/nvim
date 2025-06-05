@@ -19,20 +19,11 @@ return {
 			diagnostics = {
 				globals = { "vim" },
 			},
-			completion = {
-				callSnippet = "Replace",
-			},
-			hint = {
-				enable = true,
-			},
-			codeLens = {
-				enable = true,
-			},
 			workspace = {
 				library = {
 					vim.fn.expand("$VIMRUNTIME/lua"),
 					vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
-					vim.fn.stdpath("data") .. "/lazy/lazy.nvim/lua/lazy",
+					vim.fn.stdpath("data") .. "/lazy",
 					"${3rd}/luv/library",
 				},
 				maxPreload = 100000,

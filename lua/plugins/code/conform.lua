@@ -14,12 +14,12 @@ return {
 				css = { "stylelint", "prettierd", "biome" },
 				scss = { "stylelint", "prettierd", "biome" },
 				html = { "prettierd" },
-				json = { "fixjson", "prettierd", "biome" },
+				json = { "fixjson", "prettierd", "biome", lsp_format = "last" },
 				yaml = { --[["yq",]]
 					"prettierd",
 				},
 				markdown = { "prettierd" },
-				lua = { "stylua" },
+				lua = { "stylua", lsp_format = "fallback" },
 				go = { "goimports", "gofumpt" },
 				gotmpl = { "prettierd" },
 				sql = { "sqlfluff" },
@@ -56,12 +56,9 @@ return {
 			},
 			default_format_opts = {
 				timeout_ms = 3000,
-				lsp_format = "fallback",
+				lsp_format = "last",
 			},
-			format_on_save = {
-				lsp_format = "fallback",
-				timeout_ms = 3000,
-			},
+			format_on_save = {}, -- enables format on save
 		})
 	end,
 	keys = {
