@@ -76,10 +76,15 @@ map("n", "<leader><tab>x", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 map("n", "<leader><tab>o", "<cmd>tabonly<cr>", { desc = "Close Other Tabs" })
 
 -- Terminal
-map("t", "<ESC>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
-map("n", "<leader>t", function()
-	require("custom.terminal").open_list_or_create_terminal()
-end, { desc = "Open terminal" })
+-- map("t", "<ESC><ESC>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+-- map("n", "<leader>t", function()
+-- 	require("custom.terminal").open_list_or_create_terminal()
+-- end, { desc = "Open terminal" })
+
+-- Lazygit
+-- map("n", "<leader>gg", function()
+-- 	require("custom.lazygit").open_lazygit()
+-- end, { desc = "Lazygit" })
 
 -- Code comments
 map("n", "<leader>/", "gcc", { desc = "Toggle comment", remap = true })
