@@ -1,6 +1,6 @@
 return {
 	"saghen/blink.cmp",
-	version = "*",
+	version = "1.*",
 	dependencies = {
 		"L3MON4D3/LuaSnip",
 	},
@@ -30,20 +30,14 @@ return {
 			providers = {
 				lsp = {
 					transform_items = function(_, items)
+						if vim.bo.filetype ~= "vue" then
+							return items
+						end
+
 						return vim.iter(items)
 							:filter(
 								---@param item blink.cmp.CompletionItem
 								function(item)
-									-- FIXME: remove if ok with text from lsp
-									-- filter out text items from lsp
-									-- if item.kind == require("blink.cmp.types").CompletionItemKind.Text then
-									-- 	return false
-									-- end
-
-									if vim.bo.filetype ~= "vue" then
-										return true
-									end
-
 									local kind = require("blink.cmp.types").CompletionItemKind
 									local label = item.label
 
@@ -72,25 +66,26 @@ return {
 				},
 			},
 			menu = {
-				border = "rounded",
 				draw = {
 					treesitter = { "lsp" },
-					columns = { { "kind_icon", "kind" }, { "label", "label_description", gap = 1 } },
+					columns = { { "source_name" }, { "kind_icon", "kind" }, { "label", "label_description", gap = 1 } },
 				},
 			},
 			documentation = {
 				auto_show = true,
-				window = {
-					border = "rounded",
-				},
 			},
+			accept = { auto_brackets = { enabled = false } },
 		},
 
 		signature = {
 			enabled = true,
-			window = {
-				border = "rounded",
+		},
+
+		cmdline = {
+			keymap = {
+				preset = "inherit",
 			},
+			completion = { menu = { auto_show = true } },
 		},
 	},
 }

@@ -19,6 +19,8 @@ vim.diagnostic.config({
 	},
 })
 
+vim.opt.diffopt = "internal,filler,closeoff,linematch:60,algorithm:patience"
+
 vim.opt.statusline = require("custom.statusline").get_statusline()
 vim.opt.statuscolumn = require("custom.statuscolumn").get_statuscolumn()
 vim.opt.signcolumn = "yes:2"
@@ -74,6 +76,7 @@ vim.opt.cursorlineopt = "number"
 -- Theme
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
+vim.opt.winborder = "rounded"
 
 -- Clipboard
 -- Schedule the setting after `UiEnter` because it can increase startup-time.

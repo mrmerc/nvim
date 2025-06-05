@@ -1,3 +1,8 @@
+local explorer_state = {
+	hidden = false,
+	ignored = false,
+}
+
 return {
 	"folke/snacks.nvim",
 	priority = 1000,
@@ -73,6 +78,8 @@ return {
 							keys = {
 								["R"] = "copy_relative_name",
 								["A"] = "copy_file_path",
+								["I"] = "toggle_ignored_ext",
+								["H"] = "toggle_hidden_ext",
 							},
 						},
 					},
@@ -95,6 +102,18 @@ return {
 							vim.fn.setreg(vim.v.register or "+", item.file, "c")
 							vim.notify("Copied item path", vim.log.levels.INFO)
 						end,
+						toggle_ignored_ext = function(picker)
+							explorer_state.ignored = not explorer_state.ignored
+							picker.opts["ignored"] = explorer_state.ignored
+							picker.list:set_target()
+							picker:find()
+						end,
+						toggle_hidden_ext = function(picker)
+							explorer_state.hidden = not explorer_state.hidden
+							picker.opts["hidden"] = explorer_state.hidden
+							picker.list:set_target()
+							picker:find()
+						end,
 					},
 					layout = {
 						layout = {
@@ -116,6 +135,21 @@ return {
 					},
 				},
 				grep = {
+					preview = function(ctx)
+						local snacks = require("snacks")
+
+						local defaulty_preview_result = snacks.picker.preview.file(ctx)
+
+						local path = snacks.picker.util.path(ctx.item)
+						if not path then
+							vim.notify("Grep preview: cannot find path", vim.log.levels.ERROR)
+							return
+						end
+
+						ctx.preview:set_title(vim.fn.fnamemodify(path, ":p:."))
+
+						return defaulty_preview_result
+					end,
 					layout = {
 						layout = {
 							width = 0.8,
@@ -206,33 +240,9 @@ return {
 	},
 	keys = {
 		{
-			"gg",
-			function()
-				local snacks = require("snacks")
-				vim.defer_fn(function()
-					snacks.scroll.enable()
-				end, 50)
-				snacks.scroll.disable()
-				vim.cmd("1")
-			end,
-			desc = "Go to first line (no animation)",
-		},
-		{
-			"G",
-			function()
-				local snacks = require("snacks")
-				vim.defer_fn(function()
-					snacks.scroll.enable()
-				end, 50)
-				snacks.scroll.disable()
-				vim.cmd("%")
-			end,
-			desc = "Go to last line (no animation)",
-		},
-		{
 			"<leader>e",
 			function()
-				Snacks.explorer()
+				Snacks.explorer({ ignored = explorer_state.ignored, hidden = explorer_state.hidden })
 			end,
 			desc = "Explorer",
 		},
@@ -271,6 +281,20 @@ return {
 				Snacks.picker.grep()
 			end,
 			desc = "Grep",
+		},
+		{
+			"<leader>fq",
+			function()
+				Snacks.picker.qflist()
+			end,
+			desc = "Quickfix List",
+		},
+		{
+			"<leader>f<cr>",
+			function()
+				Snacks.picker.resume()
+			end,
+			desc = "Resume",
 		},
 		-- LSP
 		{
