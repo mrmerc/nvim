@@ -105,7 +105,7 @@ M.get_search = function()
 
 	local ok, searchcount = pcall(vim.fn.searchcount)
 
-	if not ok or searchcount["total"] == 0 then
+	if not ok or (searchcount["total"] == 0 or searchcount["total"] == nil) then
 		return ""
 	end
 
@@ -126,7 +126,6 @@ M.get_codeium = function()
 	local ok, codeium = pcall(require, "codeium.virtual_text")
 
 	if not ok then
-		vim.notify("codeium.virtual_text is not found!", vim.log.levels.ERROR)
 		return ""
 	end
 
@@ -137,6 +136,11 @@ M.get_codeium = function()
 	end)
 
 	local status = codeium.status()
+
+	if status.total == nil then
+		-- Happens on new plugin installation
+		return ""
+	end
 
 	if status.state == "idle" then
 		-- Output was cleared, for example when leaving insert mode

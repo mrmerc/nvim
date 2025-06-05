@@ -41,6 +41,7 @@ return {
 				"gosum",
 				"sql",
 				"vue",
+				"svelte",
 			},
 			incremental_selection = {
 				enable = true,

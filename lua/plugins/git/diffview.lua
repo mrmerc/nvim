@@ -25,6 +25,10 @@ return {
 			hooks = {
 				view_opened = function()
 					vim.api.nvim_tabpage_set_var(0, "name", "Diffview")
+
+					for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do
+						vim.api.nvim_win_set_var(winid, "name", "Diffview")
+					end
 				end,
 				diff_buf_read = function()
 					vim.opt_local.wrap = false

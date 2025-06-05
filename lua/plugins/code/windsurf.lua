@@ -1,5 +1,5 @@
 return {
-	"Exafunction/codeium.nvim",
+	"Exafunction/windsurf.nvim",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 	},
@@ -15,6 +15,9 @@ return {
 			},
 		},
 	},
+	config = function(_, options)
+		require("codeium").setup(options)
+	end,
 	keys = {
 		{
 			"<M-c>",

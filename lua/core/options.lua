@@ -1,14 +1,10 @@
 vim.diagnostic.config({
-	-- virtual_text = false,
 	virtual_text = {
 		prefix = "",
 		spacing = 3,
 	},
 	update_in_insert = false,
 	severity_sort = true,
-	float = {
-		border = "rounded",
-	},
 	signs = {
 		text = {
 			[vim.diagnostic.severity.ERROR] = "󰅚",
@@ -19,7 +15,7 @@ vim.diagnostic.config({
 	},
 })
 
-vim.opt.diffopt = "internal,filler,closeoff,linematch:60,algorithm:patience"
+vim.opt.diffopt = "internal,filler,closeoff,linematch:40,algorithm:patience"
 
 vim.opt.statusline = require("custom.statusline").get_statusline()
 vim.opt.statuscolumn = require("custom.statuscolumn").get_statuscolumn()
@@ -52,6 +48,8 @@ vim.opt.timeoutlen = 300
 vim.opt.virtualedit = "block" -- Allow cursor to move where there is no text in visual block mode
 vim.opt.smoothscroll = true
 vim.opt.undofile = true
+vim.opt.backup = true
+vim.opt.backupdir = os.getenv("HOME") .. "/.local/state/nvim/backup//"
 
 -- Tabs & indentation
 vim.opt.tabstop = 2 -- 2 spaces for tabs
