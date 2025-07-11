@@ -28,7 +28,6 @@ vim.opt.number = true -- Show current line number
 vim.opt.numberwidth = 1
 
 vim.opt.confirm = true -- Confirm to save changes before exiting modified buffer
--- vim.opt.laststatus = 3 -- global status line
 vim.opt.ruler = false
 vim.opt.showtabline = 1 -- show tabs only if more than one
 
@@ -103,6 +102,10 @@ vim.opt.fillchars = {
 	eob = " ",
 	fold = " ",
 }
+
+-- Perfomance
+vim.opt.redrawtime = 10000
+vim.opt.maxmempattern = 20000
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0

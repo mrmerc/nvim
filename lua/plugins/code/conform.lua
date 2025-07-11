@@ -21,8 +21,6 @@ return {
 				},
 				markdown = { "prettierd" },
 				lua = { "stylua", lsp_format = "fallback" },
-				go = { "goimports", "gofumpt" },
-				gotmpl = { "prettierd" },
 				sql = { "sqlfluff" },
 			},
 			formatters = {

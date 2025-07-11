@@ -233,11 +233,18 @@ return {
 		explorer = {},
 		styles = {
 			input = {
+				noautocmd = false,
 				relative = "cursor",
 				row = 1,
 				col = 0,
 				b = {
 					completion = true, -- enable blink completions in input
+				},
+				-- TODO: potential fix here, see https://github.com/folke/snacks.nvim/issues/1841
+				keys = {
+					i_esc = {
+						[2] = { "cmp_close", "<esc>" },
+					},
 				},
 			},
 		},
@@ -273,7 +280,7 @@ return {
 			desc = "LSP Definitions",
 		},
 		{
-			"<leader>fh",
+			"<leader>fr",
 			function()
 				Snacks.picker.recent()
 			end,
@@ -292,92 +299,6 @@ return {
 				Snacks.picker.grep()
 			end,
 			desc = "Grep",
-		},
-		{
-			"<leader>fr",
-			function()
-				local harpoon = require("harpoon")
-
-				-- resources
-				-- https://github.com/folke/snacks.nvim/pull/1019
-				-- https://github.com/folke/snacks.nvim/blob/bc0630e43be5699bb94dadc302c0d21615421d93/lua/snacks/picker/format.lua#L50
-
-				Snacks.picker({
-					win = {
-						list = {
-							keys = {
-								["<C-X>"] = "remove_item",
-							},
-						},
-					},
-					actions = {
-						remove_item = function(_, item)
-							harpoon:list():remove_at(item.idx)
-
-							vim.notify("remove " .. item.file .. " " .. item.idx, vim.log.levels.INFO)
-						end,
-					},
-					layout = {
-						layout = {
-							backdrop = false,
-							width = 0.5,
-							min_width = 80,
-							height = 0.4,
-							min_height = 3,
-							box = "vertical",
-							border = "rounded",
-							footer = "Harpoon",
-							footer_pos = "center",
-							-- { win = "input", height = 1, border = "bottom" },
-							{ win = "list", border = "none" },
-						},
-					},
-					finder = function()
-						local items = {}
-						for i, item in ipairs(harpoon:list().items) do
-							table.insert(items, {
-								idx = i,
-								file = item.value,
-								text = item.value,
-								exists = vim.uv.fs_stat(item.value),
-							})
-						end
-						return items
-					end,
-					format = function(item, picker)
-						local file = item.file
-						local ret = {}
-						local a = Snacks.picker.util.align
-						local path =
-							Snacks.picker.util.truncpath(vim.fn.fnamemodify(file, ":h"), 40, { cwd = picker:cwd() })
-						local icon, icon_hl = Snacks.util.icon(vim.fn.fnamemodify(file, ":e"), "file")
-
-						ret[#ret + 1] = { " " }
-						ret[#ret + 1] = { a(icon, 2), icon_hl }
-						ret[#ret + 1] = {
-							a(vim.fn.fnamemodify(file, ":t"), 20),
-							item.exists and "SnacksPickerFile" or "SnacksPickerPathIgnored",
-						}
-						ret[#ret + 1] = { " " }
-						ret[#ret + 1] = { a(path, 20), "SnacksPickerDir" }
-						ret[#ret + 1] = { " " }
-
-						return ret
-					end,
-					confirm = function(picker, item)
-						if not item.exists then
-							harpoon:list():remove(item.file)
-							return
-						end
-
-						vim.schedule(function()
-							vim.cmd("edit " .. item.file)
-						end)
-						picker:close()
-					end,
-				})
-			end,
-			desc = "Harpoon",
 		},
 		{
 			"<leader>fq",

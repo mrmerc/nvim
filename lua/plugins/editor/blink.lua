@@ -68,14 +68,21 @@ return {
 					enabled = true,
 					kind_resolution = {
 						enabled = true,
-						blocked_filetypes = { "typescriptreact", "javascriptreact", "vue" },
+						blocked_filetypes = { "typescriptreact", "javascriptreact" },
 					},
 				},
+			},
+			trigger = {
+				show_on_insert = true,
+				show_on_backspace = true,
 			},
 		},
 
 		signature = {
 			enabled = true,
+			window = {
+				max_height = 10,
+			},
 		},
 
 		cmdline = {

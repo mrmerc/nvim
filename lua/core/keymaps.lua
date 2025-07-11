@@ -2,8 +2,8 @@ vim.g.mapleader = " "
 
 local map = vim.keymap.set
 
--- Highlihhts
-map({ "n", "i" }, "<ESC>", "<cmd>nohlsearch<CR><ESC>", { desc = "Clear search highlights" })
+-- Highlights
+map("n", "<ESC>", "<cmd>nohlsearch<CR><ESC>", { desc = "Clear search highlights" })
 
 -- Save buffer
 map({ "n", "v" }, "<C-s>", ":silent wa<CR>", { desc = "Save all buffers", silent = true })
@@ -25,6 +25,18 @@ map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true
 map({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 map({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
+
+-- Move lines up/down
+map("n", "<A-j>", "<cmd>move .+1<CR>==", { desc = "Move line down" })
+map("n", "<A-k>", "<cmd>move .-2<CR>==", { desc = "Move line up" })
+map("v", "<A-j>", ":move '>+1<CR>gv=gv", { desc = "Move selection down" })
+map("v", "<A-k>", ":move '<-2<CR>gv=gv", { desc = "Move selection up" })
+
+-- Duplicate lines up/down
+map("n", "<S-A-j>", "<cmd>copy .-1<CR>==", { desc = "Duplicate line down" })
+map("n", "<S-A-k>", "<cmd>copy .<CR>==", { desc = "Duplicate line up" })
+map("v", "<S-A-j>", ":copy '<-1<CR>gv=gv", { desc = "Duplicate selection down" })
+map("v", "<S-A-k>", ":copy '><CR>gv=gv", { desc = "Duplicate selection up" })
 
 -- Searching
 map("n", "n", "'Nn'[v:searchforward].'zzzv'", { expr = true, desc = "Next Search Result" })

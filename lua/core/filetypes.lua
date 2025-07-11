@@ -6,12 +6,9 @@ vim.filetype.add({
 			return vim.bo[bufnr]
 					and vim.bo[bufnr].filetype ~= "bigfile"
 					and path
-					and vim.fn.getfsize(path) > (1024 * 500) -- 500 KB
+					and vim.fn.getfsize(path) > (1024 * 1024) -- 1 MB
 					and "bigfile"
 				or nil
 		end,
-	},
-	extension = {
-		gotmpl = "gotmpl",
 	},
 })

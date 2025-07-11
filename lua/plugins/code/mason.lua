@@ -28,13 +28,10 @@ return {
 				"svelte-language-server",
 				"lua-language-server",
 				"emmet-ls",
-				"gopls",
 				"json-lsp",
 
 				-- TOOLS
 				"stylua",
-				"goimports",
-				"gofumpt",
 				"eslint_d",
 				"prettierd",
 				"sqlfluff",

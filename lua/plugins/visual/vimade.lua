@@ -7,7 +7,6 @@ return {
 		blocklist = {
 			default = {
 				win_vars = { name = { "Diffview" } },
-				buf_opts = { filetype = { "snacks_input" } },
 			},
 		},
 	},
