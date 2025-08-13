@@ -6,7 +6,8 @@ local map = vim.keymap.set
 map("n", "<ESC>", "<cmd>nohlsearch<CR><ESC>", { desc = "Clear search highlights" })
 
 -- Save buffer
-map({ "n", "v" }, "<C-s>", ":silent wa<CR>", { desc = "Save all buffers", silent = true })
+map("n", "<C-s>", ":silent wa<CR>", { desc = "Save all buffers", silent = true })
+map("v", "<C-s>", "<cmd>silent wa<CR>", { desc = "Save all buffers", silent = true })
 map("i", "<C-s>", "<ESC>:silent wa<CR>", { desc = "Save all buffers", silent = true })
 
 -- Options

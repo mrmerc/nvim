@@ -25,7 +25,7 @@ require("lazy").setup({
 		{ import = "plugins.editor" },
 		{ import = "plugins.code" },
 	},
-	checker = { enabled = false },
+	checker = { enabled = true },
 	change_detection = {
 		notify = false,
 	},

@@ -18,5 +18,12 @@ return {
 			end,
 			desc = "Previous todo comment",
 		},
+		{
+			"<leader>ft",
+			function()
+				Snacks.picker.todo_comments()
+			end,
+			desc = "Todo comments",
+		},
 	},
 }

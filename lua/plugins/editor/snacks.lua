@@ -1,8 +1,3 @@
-local explorer_state = {
-	hidden = true,
-	ignored = true,
-}
-
 return {
 	"folke/snacks.nvim",
 	priority = 1000,
@@ -67,65 +62,16 @@ return {
 				},
 			},
 			hidden = true,
+			matcher = {
+				history_bonus = true,
+			},
 			formatters = {
 				file = {
 					filename_first = true,
+					truncate = 60,
 				},
 			},
 			sources = {
-				--- @type snacks.picker.explorer.Config
-				explorer = {
-					auto_close = true,
-					win = {
-						list = {
-							keys = {
-								["R"] = "copy_relative_name",
-								["A"] = "copy_file_path",
-								["I"] = "toggle_ignored_ext",
-								["H"] = "toggle_hidden_ext",
-							},
-						},
-					},
-					actions = {
-						copy_relative_name = function(_, item)
-							if not item then
-								return
-							end
-
-							local filename = vim.fs.basename(item.file)
-
-							vim.fn.setreg(vim.v.register or "+", filename, "c")
-							vim.notify("Copied item name", vim.log.levels.INFO)
-						end,
-						copy_file_path = function(_, item)
-							if not item then
-								return
-							end
-
-							vim.fn.setreg(vim.v.register or "+", item.file, "c")
-							vim.notify("Copied item path", vim.log.levels.INFO)
-						end,
-						toggle_ignored_ext = function(picker)
-							explorer_state.ignored = not explorer_state.ignored
-							picker.opts["ignored"] = explorer_state.ignored
-							picker.list:set_target()
-							picker:find()
-						end,
-						toggle_hidden_ext = function(picker)
-							explorer_state.hidden = not explorer_state.hidden
-							picker.opts["hidden"] = explorer_state.hidden
-							picker.list:set_target()
-							picker:find()
-						end,
-					},
-					layout = {
-						layout = {
-							width = 0.5,
-							height = 0.9,
-							position = "float",
-						},
-					},
-				},
 				recent = {
 					filter = {
 						cwd = true,
@@ -138,22 +84,11 @@ return {
 					},
 				},
 				grep = {
-					-- TODO: find a better way, this is a hack
-					-- preview = function(ctx)
-					-- 	local snacks = require("snacks")
-					--
-					-- 	local defaulty_preview_result = snacks.picker.preview.file(ctx)
-					--
-					-- 	local path = snacks.picker.util.path(ctx.item)
-					-- 	if not path then
-					-- 		vim.notify("Grep preview: cannot find path", vim.log.levels.ERROR)
-					-- 		return
-					-- 	end
-					--
-					-- 	ctx.preview:set_title(vim.fn.fnamemodify(path, ":p:."))
-					--
-					-- 	return defaulty_preview_result
-					-- end,
+					formatters = {
+						file = {
+							truncate = 150,
+						},
+					},
 					layout = {
 						layout = {
 							width = 0.8,
@@ -228,9 +163,7 @@ return {
 			top_down = false,
 			style = "compact",
 		},
-		scroll = {},
 		input = {},
-		explorer = {},
 		styles = {
 			input = {
 				noautocmd = false,
@@ -250,13 +183,6 @@ return {
 		},
 	},
 	keys = {
-		{
-			"<leader>e",
-			function()
-				Snacks.explorer({ ignored = explorer_state.ignored, hidden = explorer_state.hidden })
-			end,
-			desc = "Explorer",
-		},
 		-- Pickers
 		{
 			"<leader>fn",

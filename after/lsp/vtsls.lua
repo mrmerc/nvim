@@ -46,7 +46,10 @@ return {
 		typescript = {
 			disableAutomaticTypeAcquisition = true,
 			updateImportsOnFileMove = { enabled = "always" },
-			preferences = { preferTypeOnlyAutoImports = true },
+			preferences = {
+				preferTypeOnlyAutoImports = true,
+				importModuleSpecifier = "non-relative",
+			},
 		},
 	},
 }

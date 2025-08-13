@@ -1,8 +1,16 @@
 {
-  "clg": {
+  "console.log": {
     "prefix": "clg",
     "body": [
       "console.log($0)"
+    ]
+  },
+  "for..of": {
+    "prefix": "fof",
+    "body": [
+      "for (const ${2:item} of ${1:array}) {",
+      "\t$0",
+      "}"
     ]
   }
 }

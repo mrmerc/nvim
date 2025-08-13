@@ -35,11 +35,13 @@ return {
 		linters_by_ft = {
 			javascript = { "eslint_d", "biomejs" },
 			typescript = { "eslint_d", "biomejs" },
+			typescriptreact = { "eslint_d", "biomejs" },
 			vue = { "eslint_d", "stylelint" },
 			svelte = { "eslint_d", "stylelint" },
 			css = { "stylelint", "biomejs" },
 			scss = { "stylelint", "biomejs" },
-			sql = { "sqlfluff" },
+			-- Сейчас они все говно (09.08.25)
+			-- sql = { "sqlfluff" },
 			json = { "jq", "biomejs" },
 			jsonc = { "biomejs" },
 			yaml = { "yq" },

@@ -3,50 +3,37 @@ return {
 	priority = 1000,
 	lazy = false,
 	opts = function()
-		local mColors = require("utils.colors")
+		-- local mColors = require("utils.colors")
 
-		-- local fg = "#CBE0F0"
-		-- local fg_dark = "#B4D0E9"
-		-- local fg_gutter = "#2f597d"
-		-- local fg_scope = "#07243d"
+		local transparent = true
 
 		local bg = "#010f1c"
+		-- local bg = "#080808"
 
-		-- local bg = mColors.colors.bg
-		-- local bg_dark = "#011423"
-		-- local bg_dark = "#010e17"
-		local bg_dark = mColors.colors.bg
+		-- local bg_dark = mColors.colors.bg
+		local bg_dark = "#0d0d0d"
 
-		-- local bg = "#011628"
-		-- local bg_dark = "#011423"
-
-		-- local bg_highlight = fg_scope
-		-- local bg_search = "#0A64AC"
-		-- local bg_visual = "#082b47"
 		local border = "#2a3d4d"
 
 		require("tokyonight").setup({
 			style = "night",
+			transparent = transparent,
+			styles = {
+				sidebars = "dark",
+				floats = "dark",
+			},
 			on_colors = function(colors)
-				colors.bg = bg
+				colors.bg = transparent and colors.none or bg
 				colors.bg_dark = bg_dark
 				colors.bg_float = bg_dark
-				-- colors.bg_highlight = bg_highlight
 				colors.bg_popup = bg_dark
-				-- colors.bg_search = bg_search
-				colors.bg_sidebar = colors.none
+				colors.bg_sidebar = bg_dark
 				colors.bg_statusline = colors.none
-				-- colors.bg_visual = bg_visual
 				colors.border = border
 				colors.border_highlight = "#171b1f"
-				-- colors.fg = fg
-				-- colors.fg_dark = fg_dark
-				-- colors.fg_float = fg
-				-- colors.fg_gutter = fg_gutter
-				-- colors.fg_sidebar = fg_dark
 			end,
 
-			on_highlights = function(highlights)
+			on_highlights = function(highlights, colors)
 				highlights.DiffAdd = {
 					bg = "#112638",
 				}
@@ -63,9 +50,18 @@ return {
 					bg = bg,
 					fg = "#20303b",
 				}
+				highlights.SnacksInputBorder = {
+					bg = colors.bg_float,
+					fg = colors.border_highlight,
+				}
+				highlights.SnacksInputTitle = {
+					bg = colors.bg_float,
+					fg = colors.blue1,
+				}
+				highlights.SnacksInputNormal = {
+					bg = colors.bg_float,
+				}
 
-				-- Syntax hl
-				-- highlights["@variable.builtin"] = "@type.builtin"
 				highlights["@variable.parameter"] = {
 					italic = true,
 				}

@@ -12,8 +12,6 @@ return {
 		vim.api.nvim_create_autocmd("User", {
 			pattern = "GitConflictDetected",
 			callback = function()
-				vim.notify("Conflict detected")
-
 				vim.keymap.set("n", "<leader>gcc", function()
 					git_conflict.choose("ours")
 				end, { desc = "Choose [Current] change (ours)" })

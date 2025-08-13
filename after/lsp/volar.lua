@@ -1,3 +1,4 @@
+--- @see https://github.com/vuejs/language-tools/wiki/Neovim
 ---@type vim.lsp.Config
 return {
 	cmd = { "vue-language-server", "--stdio" },
@@ -25,7 +26,11 @@ return {
 					payload,
 				},
 			}, { bufnr = context.bufnr }, function(_, r)
-				local response_data = { { id, r.body } }
+				local response = r and r.body
+				-- TODO: handle error or response nil here, e.g. logging
+				-- NOTE: Do NOT return if there's an error or no response, just return nil back to the vue_ls to prevent memory leak
+				local response_data = { { id, response } }
+
 				---@diagnostic disable-next-line: param-type-mismatch
 				client:notify("tsserver/response", response_data)
 			end)
@@ -33,5 +38,10 @@ return {
 	end,
 	on_attach = function(client)
 		client.server_capabilities.documentFormattingProvider = false
+
+		-- NOTE: to be fixed in https://github.com/vuejs/language-tools/issues/5542
+		-- TODO: should be fixed in 3.0.5
+		client.server_capabilities.semanticTokensProvider.full = true
+		vim.api.nvim_set_hl(0, "@lsp.type.component", { link = "@type" })
 	end,
 }

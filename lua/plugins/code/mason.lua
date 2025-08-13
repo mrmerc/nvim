@@ -29,6 +29,7 @@ return {
 				"lua-language-server",
 				"emmet-ls",
 				"json-lsp",
+				"sqls",
 
 				-- TOOLS
 				"stylua",

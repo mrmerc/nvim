@@ -34,24 +34,5 @@ return {
 			end,
 			mode = "x",
 		},
-		{
-			"sx",
-			function()
-				require("substitute.exchange").operator()
-			end,
-		},
-		{
-			"sxx",
-			function()
-				require("substitute.exchange").line()
-			end,
-		},
-		{
-			"X",
-			function()
-				require("substitute.exchange").visual()
-			end,
-			mode = "x",
-		},
 	},
 }
